@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <DIRECTX_INCLUDE>G:/DirectX/Include</DIRECTX_INCLUDE>
+    <DIRECTX_LIB>G:/DirectX/Lib/x86</DIRECTX_LIB>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="DIRECTX_INCLUDE">
+      <Value>$(DIRECTX_INCLUDE)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DIRECTX_LIB">
+      <Value>$(DIRECTX_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
