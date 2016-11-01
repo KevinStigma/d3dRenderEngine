@@ -1,9 +1,9 @@
 #ifndef RENDER_WIDGET_H
 #define RENDER_WIDGET_H
 #include <QWidget>
-#include "foundation.h"
 #include "D3DApp.h"
 #include "GameTimer.h"
+#include "Arcball/MyArcball.h"
 
 class RenderWidget:public QWidget
 {
@@ -11,6 +11,7 @@ class RenderWidget:public QWidget
 public:
 	RenderWidget(QWidget *parent = 0);
 	~RenderWidget();
+	void loadObjData();
 	virtual QPaintEngine *paintEngine() const
 	{
 		return NULL;
@@ -25,11 +26,14 @@ public:
 	virtual void mouseReleaseEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
-
+	void testArcball();
 private:
+	
 	D3DApp m_d3dApp;
 	GameTimer m_timer;
 	int m_frameCount;
+	MyArcball*m_arcball;
+	bool m_firstStart;
 };
 
 #endif

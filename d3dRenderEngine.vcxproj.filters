@@ -36,6 +36,15 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{bb5f5ba9-eafb-4a3d-9a08-95f8c521c30f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arcball">
+      <UniqueIdentifier>{5cf9a369-cafd-409e-a930-ad82d1b8e88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FX">
+      <UniqueIdentifier>{8cc5a3fc-b8e0-4f35-a994-19d4048c60fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{39201af2-b206-468a-8327-d4d379c62c57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +80,15 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Arcball\ArcBall.cpp">
+      <Filter>Arcball</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalSys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects\Effects.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -99,6 +117,21 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Arcball\ArcBall.h">
+      <Filter>Arcball</Filter>
+    </ClInclude>
+    <ClInclude Include="Arcball\MyArcball.h">
+      <Filter>Arcball</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalSys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects\Effects.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Effects.fx">
@@ -106,6 +139,12 @@
     </FxCompile>
     <FxCompile Include="Effect.fx">
       <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Basic.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\LightHelper.fx">
+      <Filter>FX</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

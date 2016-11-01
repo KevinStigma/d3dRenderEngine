@@ -3,26 +3,30 @@
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <xnamath.h>
+#include <LightHelper.h>
 #include <d3dx11effect.h>
+#include <vector>
 #include "Camera.h"
 
 //the class encapsulate the operations about D3D
 class D3DApp
 {
-private:
+protected:
 	struct Vertex
 	{
 		Vertex(){}
 		Vertex(float x, float y, float z,
-			float cr, float cg, float cb, float ca)
-			: pos(x, y, z), color(cr, cg, cb, ca){}
+			float nx, float ny, float nz)
+			: pos(x, y, z), normal(nx,ny,nz){}
 
 		XMFLOAT3 pos;
-		XMFLOAT4 color;
+		XMFLOAT3 normal;
 	};
-	struct VS_ConstantBuffer
+
+	struct MaterialData
 	{
-		XMMATRIX WVP;
+		std::string name;
+		Material data;
 	};
 
 public:
@@ -34,9 +38,13 @@ public:
 	void cleanUp();
 	void updateScene(double deltaTime);
 	void resizeD3D(int width, int height);
+	void setTransMat(float*data);
+	void setTranslate(float x,float y);
+	void loadObjData();
 protected:
+	void initMaterials();
+	void initLight();
 	void loadShaders();
-	void loadData();
 	void createViewport(int width,int height);
 	void setRasterizationState();
 	void buildVertexLayout();
@@ -54,10 +62,27 @@ protected:
 
 	ID3D11InputLayout *m_inputLayout;
 	ID3DX11Effect*m_fx;
-	ID3DX11EffectMatrixVariable* m_fxWVPVar;
-	ID3DX11EffectTechnique* m_tech;
 
+	ID3DX11EffectMatrixVariable* m_fxWorldViewProj;
+	ID3DX11EffectMatrixVariable* m_fxWorld;
+	ID3DX11EffectMatrixVariable* m_fxWorldInvTranspose;
+	ID3DX11EffectVectorVariable* m_fxEyePosW;
+	ID3DX11EffectTechnique* m_fxTech;
+	ID3DX11EffectVariable* m_fxDirLight;
+	ID3DX11EffectVariable* m_fxPointLight;
+	ID3DX11EffectVariable* m_fxSpotLight;
+	ID3DX11EffectVariable* m_fxMaterial;
+
+	XMFLOAT4X4 m_transformMat;
 	Camera m_camera;
+
+	//Light
+	std::vector<DirectionalLight> m_dirLight;
+	SpotLight m_spotLight;
+	PointLight m_pointLight;
+
+	std::vector<MaterialData> m_materials;
+	float m_translateX, m_translateY;
 };
 
 #endif

@@ -11,6 +11,10 @@ class d3dRenderEngine : public QMainWindow
 public:
 	d3dRenderEngine(QWidget *parent = 0);
 	~d3dRenderEngine();
+	void keyPressEvent(QKeyEvent *event);
+
+public slots:
+	void on_actionLoad_Obj_triggered();
 
 private:
 	Ui::d3dRenderEngineClass ui;

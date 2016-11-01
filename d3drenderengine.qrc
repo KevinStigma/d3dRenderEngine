@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="d3dRenderEngine">
+    </qresource>
+</RCC>

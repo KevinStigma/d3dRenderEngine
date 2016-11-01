@@ -1,24 +1,20 @@
 #include "D3DApp.h"
+#include "GlobalSys.h"
 #include <d3dUtil.h>
 #include <iostream>
-
-XMMATRIX cube1WorldMat;
-XMMATRIX cube2WorldMat;
-
-XMMATRIX rotation;
-XMMATRIX scale;
-XMMATRIX translation;
-float rotAngle = 0.1f;
-float rotateSpeed = 1.0f;
+#include <MathHelper.h>
 
 XMMATRIX camView;
 XMMATRIX camProjection;
 
-
 D3DApp::D3DApp() :m_d3dDevice(0), m_d3dDevContext(0), m_swapChain(0),m_depthStencilBuffer(0),m_depthStencilView(0),
-m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_inputLayout(0), m_fx(0)
+m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_inputLayout(0), m_fx(0),
+m_translateX(0), m_translateY(0)
 {
 	m_camera.init();
+	XMStoreFloat4x4(&m_transformMat, XMMatrixIdentity());
+	initLight();
+	initMaterials();
 }
 
 D3DApp::~D3DApp()
@@ -58,7 +54,7 @@ bool D3DApp::initD3D(HWND windowId, int width, int height)
 
 
 	//Create our SwapChain
-	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL,
+	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, NULL, NULL,
 		D3D11_SDK_VERSION, &swapChainDesc, &m_swapChain, &m_d3dDevice, NULL, &m_d3dDevContext);
 
 	if (FAILED(hr))
@@ -99,65 +95,76 @@ bool D3DApp::initD3D(HWND windowId, int width, int height)
 	return true;
 }
 
-void D3DApp::loadData()
+void D3DApp::initMaterials()
 {
-	Vertex v[] =
+	float r=0.73725f, g=0.741176f, b=0.74902f;
+	m_materials.resize(1);
+	m_materials[0].name = "gray";
+	m_materials[0].data.Ambient = XMFLOAT4(r*0.2f,g*0.2f,b*0.2f,1.0f);
+	m_materials[0].data.Diffuse = XMFLOAT4(r*0.4f,g*0.4f,b*0.4f, 1.0f);
+	m_materials[0].data.Specular = XMFLOAT4(r*0.5f,g*0.5f,b*0.5f,16.0f);
+}
+
+void D3DApp::initLight()
+{
+	m_dirLight.resize(2);
+	m_dirLight[0].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); 
+	m_dirLight[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[0].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[0].Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
+
+	m_dirLight[1].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[1].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[1].Direction = XMFLOAT3(-0.57735f, 0.57735f, -0.57735f);
+
+	m_spotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_spotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_spotLight.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_spotLight.Att = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_spotLight.Spot = 96.0f;
+	m_spotLight.Range = 10000.0f;
+
+	m_pointLight.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	m_pointLight.Diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	m_pointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	m_pointLight.Att = XMFLOAT3(0.0f, 0.1f, 0.0f);
+	m_pointLight.Range = 25.0f;
+}
+
+//now for convenient, we only use the first object to generate buffers
+void D3DApp::loadObjData()
+{
+	std::vector<Vertex> vertices;
+	const std::vector<float>& positions = g_pGlobalSys->objects[0].mesh.positions;
+	const std::vector<float>& normals = g_pGlobalSys->objects[0].mesh.normals;
+
+	int num_vertex = positions.size() / 3;
+	for (int i = 0; i < num_vertex; i++)
 	{
-		Vertex(-1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f),
-		Vertex(-1.0f, +1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f),
-		Vertex(+1.0f, +1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f),
-		Vertex(+1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f),
-		Vertex(-1.0f, -1.0f, +1.0f, 0.0f, 1.0f, 1.0f, 1.0f),
-		Vertex(-1.0f, +1.0f, +1.0f, 1.0f, 1.0f, 1.0f, 1.0f),
-		Vertex(+1.0f, +1.0f, +1.0f, 1.0f, 0.0f, 1.0f, 1.0f),
-		Vertex(+1.0f, -1.0f, +1.0f, 1.0f, 0.0f, 0.0f, 1.0f),
-	};
-	//create index 
-	DWORD indices[] = {
-		// front face
-		0, 1, 2,
-		0, 2, 3,
-
-		// back face
-		4, 6, 5,
-		4, 7, 6,
-
-		// left face
-		4, 5, 1,
-		4, 1, 0,
-
-		// right face
-		3, 2, 6,
-		3, 6, 7,
-
-		// top face
-		1, 5, 6,
-		1, 6, 2,
-
-		// bottom face
-		4, 0, 3,
-		4, 3, 7
-	};
-
+		vertices.push_back(Vertex(positions[i * 3], positions[i * 3+1], positions[i * 3+2],
+			normals[i * 3], normals[i * 3+1], normals[i * 3+2]));
+	}
+	
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex)* 8;
+	vbd.ByteWidth = sizeof(Vertex)* num_vertex;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = v;
+	vinitData.pSysMem = &vertices[0];
 	HR(m_d3dDevice->CreateBuffer(&vbd, &vinitData, &m_squareVertexBuffer));
 
-
+	const std::vector<unsigned int>& indices = g_pGlobalSys->objects[0].mesh.indices;
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(DWORD)* 12*3;
+	ibd.ByteWidth = sizeof(unsigned int)* indices.size();
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = indices;
+	iinitData.pSysMem = &indices[0];
 	HR(m_d3dDevice->CreateBuffer(&ibd, &iinitData, &m_squareIndiceBuffer));
 }
 
@@ -171,7 +178,7 @@ void D3DApp::loadShaders()
 
 	ID3D10Blob*compiledShader = 0;
 	ID3D10Blob*compilationMsgs = 0;
-	HRESULT hr = D3DX11CompileFromFile(L"Effect.fx", 0, 0, 0, "fx_5_0", shaderFlags, 0, 0, &compiledShader, &compilationMsgs,0);
+	HRESULT hr = D3DX11CompileFromFile(L"FX/Basic.fx", 0, 0, 0, "fx_5_0", shaderFlags, 0, 0, &compiledShader, &compilationMsgs,0);
 	if (compilationMsgs != 0)
 	{
 		std::cout << (char*)compilationMsgs->GetBufferPointer() << std::endl;
@@ -184,12 +191,20 @@ void D3DApp::loadShaders()
 		return;
 	}
 
-	D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(),compiledShader->GetBufferSize(),0,m_d3dDevice,&m_fx);
+	HR(D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(),compiledShader->GetBufferSize()
+		,0,m_d3dDevice,&m_fx));
 
 	ReleaseCOM(compiledShader);
 
-	m_fxWVPVar = m_fx->GetVariableByName("gWorldViewProj")->AsMatrix();
-	m_tech = m_fx->GetTechniqueByName("ColorTech");
+	m_fxTech = m_fx->GetTechniqueByName("Light2");
+	m_fxWorldViewProj = m_fx->GetVariableByName("gWorldViewProj")->AsMatrix();
+	m_fxWorld = m_fx->GetVariableByName("gWorld")->AsMatrix();
+	m_fxWorldInvTranspose = m_fx->GetVariableByName("gWorldInvTranspose")->AsMatrix();
+	m_fxEyePosW = m_fx->GetVariableByName("gEyePosW")->AsVector();
+	m_fxDirLight = m_fx->GetVariableByName("gDirLights");
+	m_fxPointLight = m_fx->GetVariableByName("gPointLight");
+	m_fxSpotLight = m_fx->GetVariableByName("gSpotLight");
+	m_fxMaterial = m_fx->GetVariableByName("gMaterial");
 }
 
 void D3DApp::createViewport(int width, int height)
@@ -211,14 +226,14 @@ void D3DApp::createViewport(int width, int height)
 
 void D3DApp::buildVertexLayout()
 {
-	const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
 	D3DX11_PASS_DESC passDesc;
-	m_tech->GetPassByIndex(0)->GetDesc(&passDesc);
+	m_fxTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(m_d3dDevice->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, &m_inputLayout));
 }
@@ -237,7 +252,7 @@ void D3DApp::setRasterizationState()
 void D3DApp::initScene(int width,int height)
 {
 	loadShaders();
-	loadData();
+	//loadData();
 	buildVertexLayout();
 	createViewport(width, height);
 
@@ -255,61 +270,48 @@ void D3DApp::renderScene()
 	//Refresh the Depth/Stencil view
 	m_d3dDevContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
-	m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);
-	m_d3dDevContext->IASetInputLayout(m_inputLayout);
-	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	if (m_squareVertexBuffer&&m_squareIndiceBuffer)
+	{
+		XMFLOAT3 eyePosW(m_camera.position.x, m_camera.position.y, m_camera.position.z);
+		m_fxDirLight->SetRawValue(&m_dirLight[0], 0, sizeof(m_dirLight[0])*2);
+		m_fxPointLight->SetRawValue(&m_pointLight, 0, sizeof(m_pointLight));
+		m_fxSpotLight->SetRawValue(&m_spotLight, 0, sizeof(m_spotLight));
+		m_fxEyePosW->SetRawValue(&eyePosW, 0, sizeof(eyePosW));
+		
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
+		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);
+		m_d3dDevContext->IASetInputLayout(m_inputLayout);
+		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	D3DX11_TECHNIQUE_DESC techDesc;
-	m_tech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{	
-		XMMATRIX WVP;
-		WVP = cube1WorldMat * camView * camProjection;
-		m_fxWVPVar->SetMatrix(reinterpret_cast<float*>(&WVP));
-		m_tech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
-		m_d3dDevContext->DrawIndexed(36, 0, 0);
+		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
+		XMMATRIX translateMat = XMMatrixTranslation(m_translateX, m_translateY, 0.0f);
+		XMMATRIX worldMat = XMMatrixIdentity();
 
-		WVP = cube2WorldMat * camView * camProjection;
-		m_fxWVPVar->SetMatrix(reinterpret_cast<float*>(&WVP));
-		m_tech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
-		//Draw the second cube
-		m_d3dDevContext->DrawIndexed(36, 0, 0);
+		D3DX11_TECHNIQUE_DESC techDesc;
+		m_fxTech->GetDesc(&techDesc);
+		for (UINT p = 0; p < techDesc.Passes; ++p)
+		{
+			XMMATRIX WVP;
+			WVP = worldMat* rotScaleMat* translateMat* camView * camProjection;
+			m_fxWorld->SetMatrix(reinterpret_cast<float*>(&worldMat));
+			m_fxWorldInvTranspose->SetMatrix(reinterpret_cast<float*>(&worldMat));
+			m_fxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&WVP));
+			m_fxMaterial->SetRawValue(&m_materials[0].data, 0, sizeof(m_materials[0].data));
+
+			m_fxTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
+			m_d3dDevContext->DrawIndexed(g_pGlobalSys->objects[0].mesh.indices.size(), 0, 0);
+		}
 	}
-
 	//Present the backbuffer to the screen
 	m_swapChain->Present(0, 0);
 }
 
 void D3DApp::updateScene(double deltaTime)
 {
-	rotAngle += rotateSpeed*deltaTime;
-	if (rotAngle >= 6.28f)
-		rotAngle = 0.0f;
-
-	//Reset cube1World
-	cube1WorldMat = XMMatrixIdentity();
-
-	//Define cube1's world space matrix
-	XMVECTOR rotaxis = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	rotation = XMMatrixRotationAxis(rotaxis, rotAngle);
-	translation = XMMatrixTranslation(0.0f, 0.0f, 4.0f);
-
-	//Set cube1's world space using the transformations
-	cube1WorldMat = translation * rotation; 
-
-	//Reset cube2World
-	cube2WorldMat = XMMatrixIdentity();
-
-	//Define cube2's world space matrix
-	rotation = XMMatrixRotationAxis(rotaxis, -rotAngle);
-	scale = XMMatrixScaling(1.2f, 1.2f, 1.2f);
-
-	//Set cube2's world space matrix
-	cube2WorldMat = rotation * scale;
 }
+
 void D3DApp::resizeD3D(int width,int height)
 {
 	ReleaseCOM(m_renderTargetView);
@@ -361,6 +363,22 @@ void D3DApp::resizeD3D(int width,int height)
 
 	//Set the Viewport
 	m_d3dDevContext->RSSetViewports(1, &viewport);
+}
+
+void D3DApp::setTransMat(float*data)
+{
+	for (int i = 0; i < 4;i++)
+	for (int j = 0; j < 4; j++)
+	{
+		int baseInd = i * 4;
+		m_transformMat(j,i) = data[baseInd + j];
+	}
+}
+
+void D3DApp::setTranslate(float x, float y)
+{
+	m_translateX = x;
+	m_translateY = y;
 }
 
 void D3DApp::cleanUp()

@@ -17,11 +17,11 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -40,12 +40,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(DIRECTX_INCLUDE);$(SolutionDir)\Dependency\Common;$(IncludePath)</IncludePath>
+    <IncludePath>$(DIRECTX_INCLUDE);$(SolutionDir)\Dependency\Common;$(SolutionDir)Dependency\tinyobjloader;$(SolutionDir)Dependency\eigen3;$(IncludePath)</IncludePath>
     <LibraryPath>$(DIRECTX_LIB);$(SolutionDir)\Dependency\Common;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(DIRECTX_INCLUDE);$(SolutionDir)\Dependency\Common;$(IncludePath)</IncludePath>
+    <IncludePath>$(DIRECTX_INCLUDE);$(SolutionDir)\Dependency\Common;$(SolutionDir)Dependency\tinyobjloader;$(SolutionDir)Dependency\eigen3;$(IncludePath)</IncludePath>
     <LibraryPath>$(DIRECTX_LIB);$(SolutionDir)\Dependency\Common;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -82,9 +83,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arcball\ArcBall.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
+    <ClCompile Include="Effects\Effects.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_d3drenderengine.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -104,6 +107,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RenderWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GlobalSys.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
   </ItemGroup>
@@ -132,10 +136,15 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arcball\ArcBall.h" />
+    <ClInclude Include="Arcball\MyArcball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3DApp.h" />
+    <ClInclude Include="Effects\Effects.h" />
+    <ClInclude Include="foundation.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
+    <ClInclude Include="GlobalSys.h" />
     <CustomBuild Include="RenderWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing RenderWidget.h...</Message>
@@ -167,6 +176,14 @@
     <FxCompile Include="Effects.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="FX\Basic.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="FX\LightHelper.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
