@@ -33,9 +33,6 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{bb5f5ba9-eafb-4a3d-9a08-95f8c521c30f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Arcball">
       <UniqueIdentifier>{5cf9a369-cafd-409e-a930-ad82d1b8e88b}</UniqueIdentifier>
     </Filter>
@@ -89,6 +86,9 @@
     <ClCompile Include="Effects\Effects.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -132,14 +132,11 @@
     <ClInclude Include="Effects\Effects.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Effects.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Effect.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="FX\Basic.fx">
       <Filter>FX</Filter>
     </FxCompile>

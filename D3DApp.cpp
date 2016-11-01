@@ -8,8 +8,7 @@ XMMATRIX camView;
 XMMATRIX camProjection;
 
 D3DApp::D3DApp() :m_d3dDevice(0), m_d3dDevContext(0), m_swapChain(0),m_depthStencilBuffer(0),m_depthStencilView(0),
-m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_inputLayout(0), m_fx(0),
-m_translateX(0), m_translateY(0)
+m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_translateX(0), m_translateY(0)
 {
 	m_camera.init();
 	XMStoreFloat4x4(&m_transformMat, XMMatrixIdentity());
@@ -107,7 +106,7 @@ void D3DApp::initMaterials()
 
 void D3DApp::initLight()
 {
-	m_dirLight.resize(2);
+	m_dirLight.resize(3);
 	m_dirLight[0].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); 
 	m_dirLight[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_dirLight[0].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -117,6 +116,11 @@ void D3DApp::initLight()
 	m_dirLight[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_dirLight[1].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_dirLight[1].Direction = XMFLOAT3(-0.57735f, 0.57735f, -0.57735f);
+
+	m_dirLight[2].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[2].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[2].Direction = XMFLOAT3(-0.57735f, 0.57735f, -0.57735f);
 
 	m_spotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_spotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
@@ -170,41 +174,7 @@ void D3DApp::loadObjData()
 
 void D3DApp::loadShaders()
 {
-	DWORD shaderFlags = 0;
-#ifdef DEBUG||__DEBUG
-	shaderFlags|=D3D10_SHADER_DEBUG;
-	shaderFlags |= D3D10_SHADER_SKIP_OPTIMIZATION;
-#endif
-
-	ID3D10Blob*compiledShader = 0;
-	ID3D10Blob*compilationMsgs = 0;
-	HRESULT hr = D3DX11CompileFromFile(L"FX/Basic.fx", 0, 0, 0, "fx_5_0", shaderFlags, 0, 0, &compiledShader, &compilationMsgs,0);
-	if (compilationMsgs != 0)
-	{
-		std::cout << (char*)compilationMsgs->GetBufferPointer() << std::endl;
-		ReleaseCOM(compilationMsgs);
-		return;
-	}
-	if (FAILED(hr))
-	{
-		std::cout << "compile effect file error!" << std::endl;
-		return;
-	}
-
-	HR(D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(),compiledShader->GetBufferSize()
-		,0,m_d3dDevice,&m_fx));
-
-	ReleaseCOM(compiledShader);
-
-	m_fxTech = m_fx->GetTechniqueByName("Light2");
-	m_fxWorldViewProj = m_fx->GetVariableByName("gWorldViewProj")->AsMatrix();
-	m_fxWorld = m_fx->GetVariableByName("gWorld")->AsMatrix();
-	m_fxWorldInvTranspose = m_fx->GetVariableByName("gWorldInvTranspose")->AsMatrix();
-	m_fxEyePosW = m_fx->GetVariableByName("gEyePosW")->AsVector();
-	m_fxDirLight = m_fx->GetVariableByName("gDirLights");
-	m_fxPointLight = m_fx->GetVariableByName("gPointLight");
-	m_fxSpotLight = m_fx->GetVariableByName("gSpotLight");
-	m_fxMaterial = m_fx->GetVariableByName("gMaterial");
+	Effects::InitAll(m_d3dDevice);
 }
 
 void D3DApp::createViewport(int width, int height)
@@ -226,16 +196,7 @@ void D3DApp::createViewport(int width, int height)
 
 void D3DApp::buildVertexLayout()
 {
-	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
-
-	D3DX11_PASS_DESC passDesc;
-	m_fxTech->GetPassByIndex(0)->GetDesc(&passDesc);
-	HR(m_d3dDevice->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, &m_inputLayout));
+	InputLayouts::initAll(m_d3dDevice,Effects::BasicFX->Light1Tech);
 }
 
 void D3DApp::setRasterizationState()
@@ -272,35 +233,36 @@ void D3DApp::renderScene()
 
 	if (m_squareVertexBuffer&&m_squareIndiceBuffer)
 	{
-		XMFLOAT3 eyePosW(m_camera.position.x, m_camera.position.y, m_camera.position.z);
-		m_fxDirLight->SetRawValue(&m_dirLight[0], 0, sizeof(m_dirLight[0])*2);
-		m_fxPointLight->SetRawValue(&m_pointLight, 0, sizeof(m_pointLight));
-		m_fxSpotLight->SetRawValue(&m_spotLight, 0, sizeof(m_spotLight));
-		m_fxEyePosW->SetRawValue(&eyePosW, 0, sizeof(eyePosW));
+		BasicEffect*basicEffect = Effects::BasicFX;
 		
+		XMFLOAT3 eyePosW(m_camera.position.x, m_camera.position.y, m_camera.position.z);
+		basicEffect->SetDirLights(&m_dirLight[0]);
+		basicEffect->SetEyePosW(eyePosW);
+
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_d3dDevContext->IASetInputLayout(m_inputLayout);
+		m_d3dDevContext->IASetInputLayout(InputLayouts::PosNormal);
 		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
 		XMMATRIX translateMat = XMMatrixTranslation(m_translateX, m_translateY, 0.0f);
 		XMMATRIX worldMat = XMMatrixIdentity();
 
+		ID3DX11EffectTechnique* activeTech = basicEffect->Light2Tech;
 		D3DX11_TECHNIQUE_DESC techDesc;
-		m_fxTech->GetDesc(&techDesc);
+		activeTech->GetDesc(&techDesc);
 		for (UINT p = 0; p < techDesc.Passes; ++p)
 		{
 			XMMATRIX WVP;
 			WVP = worldMat* rotScaleMat* translateMat* camView * camProjection;
-			m_fxWorld->SetMatrix(reinterpret_cast<float*>(&worldMat));
-			m_fxWorldInvTranspose->SetMatrix(reinterpret_cast<float*>(&worldMat));
-			m_fxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&WVP));
-			m_fxMaterial->SetRawValue(&m_materials[0].data, 0, sizeof(m_materials[0].data));
+			basicEffect->SetWorld(worldMat);
+			basicEffect->SetWorldInvTranspose(worldMat);
+			basicEffect->SetWorldViewProj(WVP);
+			basicEffect->SetMaterial(m_materials[0].data);
 
-			m_fxTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
+			activeTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
 			m_d3dDevContext->DrawIndexed(g_pGlobalSys->objects[0].mesh.indices.size(), 0, 0);
 		}
 	}
@@ -392,6 +354,6 @@ void D3DApp::cleanUp()
 	ReleaseCOM(m_rasterizeState);
 	ReleaseCOM(m_squareVertexBuffer);
 	ReleaseCOM(m_squareIndiceBuffer);
-	ReleaseCOM(m_inputLayout);
-	ReleaseCOM(m_fx);
+	Effects::DestroyAll();
+	InputLayouts::destroyAll();
 }

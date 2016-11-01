@@ -7,22 +7,12 @@
 #include <d3dx11effect.h>
 #include <vector>
 #include "Camera.h"
-
+#include "Effects/Effects.h"
+#include "Vertex.h"
 //the class encapsulate the operations about D3D
 class D3DApp
 {
 protected:
-	struct Vertex
-	{
-		Vertex(){}
-		Vertex(float x, float y, float z,
-			float nx, float ny, float nz)
-			: pos(x, y, z), normal(nx,ny,nz){}
-
-		XMFLOAT3 pos;
-		XMFLOAT3 normal;
-	};
-
 	struct MaterialData
 	{
 		std::string name;
@@ -59,19 +49,6 @@ protected:
 
 	ID3D11Buffer *m_squareVertexBuffer;
 	ID3D11Buffer *m_squareIndiceBuffer;
-
-	ID3D11InputLayout *m_inputLayout;
-	ID3DX11Effect*m_fx;
-
-	ID3DX11EffectMatrixVariable* m_fxWorldViewProj;
-	ID3DX11EffectMatrixVariable* m_fxWorld;
-	ID3DX11EffectMatrixVariable* m_fxWorldInvTranspose;
-	ID3DX11EffectVectorVariable* m_fxEyePosW;
-	ID3DX11EffectTechnique* m_fxTech;
-	ID3DX11EffectVariable* m_fxDirLight;
-	ID3DX11EffectVariable* m_fxPointLight;
-	ID3DX11EffectVariable* m_fxSpotLight;
-	ID3DX11EffectVariable* m_fxMaterial;
 
 	XMFLOAT4X4 m_transformMat;
 	Camera m_camera;
