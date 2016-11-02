@@ -4,13 +4,10 @@
 #include <iostream>
 #include <MathHelper.h>
 
-XMMATRIX camView;
-XMMATRIX camProjection;
-
 D3DApp::D3DApp() :m_d3dDevice(0), m_d3dDevContext(0), m_swapChain(0),m_depthStencilBuffer(0),m_depthStencilView(0),
 m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_translateX(0), m_translateY(0)
 {
-	m_camera.init();
+	m_camera = new Camera;
 	XMStoreFloat4x4(&m_transformMat, XMMatrixIdentity());
 	initLight();
 	initMaterials();
@@ -19,6 +16,7 @@ m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndi
 D3DApp::~D3DApp()
 {
 	cleanUp();
+	SafeDelete(m_camera);
 }
 
 bool D3DApp::initD3D(HWND windowId, int width, int height)
@@ -147,7 +145,7 @@ void D3DApp::loadObjData()
 	for (int i = 0; i < num_vertex; i++)
 	{
 		vertices.push_back(Vertex(positions[i * 3], positions[i * 3+1], positions[i * 3+2],
-			normals[i * 3], normals[i * 3+1], normals[i * 3+2]));
+			normals[i * 3], normals[i * 3+1], normals[i * 3+2],0,0));
 	}
 	
 	D3D11_BUFFER_DESC vbd;
@@ -199,6 +197,11 @@ void D3DApp::buildVertexLayout()
 	InputLayouts::initAll(m_d3dDevice,Effects::BasicFX->Light1Tech);
 }
 
+void D3DApp::loadTextures()
+{
+
+}
+
 void D3DApp::setRasterizationState()
 {
 	D3D11_RASTERIZER_DESC wfdesc;
@@ -212,13 +215,11 @@ void D3DApp::setRasterizationState()
 
 void D3DApp::initScene(int width,int height)
 {
+	m_camera->init(width, height);
 	loadShaders();
-	//loadData();
+	loadTextures();
 	buildVertexLayout();
 	createViewport(width, height);
-
-	camView = XMMatrixLookAtLH(XMLoadFloat4(&m_camera.position), XMLoadFloat4(&m_camera.target), XMLoadFloat4(&m_camera.up));
-	camProjection = XMMatrixPerspectiveFovLH(m_camera.fov, (float)width / height, m_camera.zNear, m_camera.zFar);
 	setRasterizationState();
 }
 
@@ -235,7 +236,7 @@ void D3DApp::renderScene()
 	{
 		BasicEffect*basicEffect = Effects::BasicFX;
 		
-		XMFLOAT3 eyePosW(m_camera.position.x, m_camera.position.y, m_camera.position.z);
+		XMFLOAT3 eyePosW(m_camera->position.x, m_camera->position.y, m_camera->position.z);
 		basicEffect->SetDirLights(&m_dirLight[0]);
 		basicEffect->SetEyePosW(eyePosW);
 
@@ -256,7 +257,7 @@ void D3DApp::renderScene()
 		for (UINT p = 0; p < techDesc.Passes; ++p)
 		{
 			XMMATRIX WVP;
-			WVP = worldMat* rotScaleMat* translateMat* camView * camProjection;
+			WVP = worldMat* rotScaleMat* translateMat* m_camera->getViewMatrix() * m_camera->getProjMatrix();
 			basicEffect->SetWorld(worldMat);
 			basicEffect->SetWorldInvTranspose(worldMat);
 			basicEffect->SetWorldViewProj(WVP);

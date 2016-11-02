@@ -1,10 +1,10 @@
 #ifndef RENDER_WIDGET_H
 #define RENDER_WIDGET_H
 #include <QWidget>
-#include "D3DApp.h"
 #include "GameTimer.h"
 #include "Arcball/MyArcball.h"
 
+class D3DApp;
 class RenderWidget:public QWidget
 {
 	Q_OBJECT
@@ -29,7 +29,7 @@ public:
 	void testArcball();
 private:
 	
-	D3DApp m_d3dApp;
+	D3DApp* m_d3dApp;
 	GameTimer m_timer;
 	int m_frameCount;
 	MyArcball*m_arcball;

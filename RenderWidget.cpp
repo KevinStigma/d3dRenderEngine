@@ -1,4 +1,5 @@
 #include "RenderWidget.h"
+#include "D3DApp.h"
 #include <assert.h>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -7,13 +8,16 @@
 #include <iostream>
 #include "foundation.h"
 
+
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
+	m_d3dApp = new D3DApp;
 	m_frameCount = 0;
 	m_timer.Reset();
+
 }
 
 RenderWidget::~RenderWidget()
@@ -44,13 +48,13 @@ void RenderWidget::resizeEvent(QResizeEvent *event)
 {
 	if (m_firstStart)
 	{
-		m_d3dApp.initD3D((HWND)winId(), width(), height());
-		m_d3dApp.initScene(width(), height());
+		m_d3dApp->initD3D((HWND)winId(), width(), height());
+		m_d3dApp->initScene(width(), height());
 		m_arcball = new MyArcball(width(), height());
 		//testArcball();
 		m_firstStart = false;
 	}
-	m_d3dApp.resizeD3D(width(), height());
+	m_d3dApp->resizeD3D(width(), height());
 }
 void RenderWidget::paintEvent(QPaintEvent *event)
 {
@@ -64,15 +68,15 @@ void RenderWidget::paintEvent(QPaintEvent *event)
 		m_frameCount = 0;
 		m_timer.Reset();
 	}
-	m_d3dApp.updateScene(m_timer.DeltaTime()*2);
-	m_d3dApp.setTransMat(m_arcball->Transform.M);
-	m_d3dApp.renderScene();
+	m_d3dApp->updateScene(m_timer.DeltaTime()*2);
+	m_d3dApp->setTransMat(m_arcball->Transform.M);
+	m_d3dApp->renderScene();
 	update();
 }
 
 void RenderWidget::loadObjData()
 {
-	m_d3dApp.loadObjData();
+	m_d3dApp->loadObjData();
 }
 
 void RenderWidget::keyPressEvent(QKeyEvent *event)
@@ -130,7 +134,7 @@ void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 		float dy = 0.01f*static_cast<float>(qpoint.y() - m_arcball->mLastMousePos.s.Y);
 		m_arcball->translate_x += dx;
 		m_arcball->translate_y -= dy;
-		m_d3dApp.setTranslate(m_arcball->translate_x, m_arcball->translate_y);
+		m_d3dApp->setTranslate(m_arcball->translate_x, m_arcball->translate_y);
 	}
 	m_arcball->mLastMousePos.s.X = posx;
 	m_arcball->mLastMousePos.s.Y = posy;

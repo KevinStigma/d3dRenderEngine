@@ -1,8 +1,6 @@
 #ifndef D3DAPP_H
 #define D3DAPP_H
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <xnamath.h>
+#include <d3dUtil.h>
 #include <LightHelper.h>
 #include <d3dx11effect.h>
 #include <vector>
@@ -21,11 +19,11 @@ protected:
 
 public:
 	D3DApp();
-	~D3DApp();
+	virtual ~D3DApp();
 	bool initD3D(HWND windowId, int width, int height);
 	void initScene(int width, int height);
-	void renderScene();
-	void cleanUp();
+	virtual void renderScene();
+	virtual void cleanUp();
 	void updateScene(double deltaTime);
 	void resizeD3D(int width, int height);
 	void setTransMat(float*data);
@@ -38,6 +36,7 @@ protected:
 	void createViewport(int width,int height);
 	void setRasterizationState();
 	void buildVertexLayout();
+	virtual void loadTextures();
 
 	ID3D11Device *m_d3dDevice;
 	ID3D11DeviceContext *m_d3dDevContext;
@@ -51,7 +50,7 @@ protected:
 	ID3D11Buffer *m_squareIndiceBuffer;
 
 	XMFLOAT4X4 m_transformMat;
-	Camera m_camera;
+	Camera* m_camera;
 
 	//Light
 	std::vector<DirectionalLight> m_dirLight;

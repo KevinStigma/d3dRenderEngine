@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="Arcball\ArcBall.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CrateApp.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
     <ClCompile Include="Effects\Effects.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Arcball\ArcBall.h" />
     <ClInclude Include="Arcball\MyArcball.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CrateApp.h" />
     <ClInclude Include="D3DApp.h" />
     <ClInclude Include="Effects\Effects.h" />
     <ClInclude Include="foundation.h" />
