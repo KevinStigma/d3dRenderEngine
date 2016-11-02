@@ -122,7 +122,7 @@
 
 //utility macros
 //assuming IEEE-754(float), which i believe has max precision of 7 bits
-# define Epsilon 1.0e-5
+# define EPSILON  1.0e-5
 
 //Math functions
 

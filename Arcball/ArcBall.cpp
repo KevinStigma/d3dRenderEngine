@@ -106,7 +106,7 @@ void    ArcBall_t::drag(const Point2fT* NewPt, Quat4fT* NewRot)
         Vector3fCross(&Perp, &this->StVec, &this->EnVec);
 
         //Compute the length of the perpendicular vector
-        if (Vector3fLength(&Perp) > Epsilon)    //if its non-zero
+		if (Vector3fLength(&Perp) > EPSILON)    //if its non-zero
         {
             //We're ok, so return the perpendicular vector as the transform after all
             NewRot->s.X = Perp.s.X;

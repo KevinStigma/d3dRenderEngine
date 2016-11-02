@@ -1,5 +1,4 @@
 #include "RenderWidget.h"
-#include "D3DApp.h"
 #include <assert.h>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -7,6 +6,8 @@
 #include <QMessageBox>
 #include <iostream>
 #include "foundation.h"
+#include "D3DApp.h"
+#include "CrateApp.h"
 
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
@@ -14,7 +15,7 @@ RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new D3DApp;
+	m_d3dApp = new CrateApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 
@@ -23,6 +24,8 @@ RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 RenderWidget::~RenderWidget()
 {
 	SAFE_DELETE(m_arcball);
+	m_d3dApp->cleanUp();
+	SafeDelete(m_d3dApp);
 }
 
 

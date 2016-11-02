@@ -1,9 +1,16 @@
 #include "CrateApp.h"
 #include "GlobalSys.h"
+
+void CrateApp::cleanUp()
+{
+	D3DApp::cleanUp();
+	ReleaseCOM(m_boxTexView);
+}
+
 void CrateApp::loadTextures()
 {
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/box.jpg",0,0,&m_boxTexView,0));
+		L"../Data/Images/box1.jpg",0,0,&m_boxTexView,0));
 }
 
 void CrateApp::renderScene()
@@ -22,7 +29,6 @@ void CrateApp::renderScene()
 		XMFLOAT3 eyePosW(m_camera->position.x, m_camera->position.y, m_camera->position.z);
 		basicEffect->SetDirLights(&m_dirLight[0]);
 		basicEffect->SetEyePosW(eyePosW);
-		basicEffect->SetResource(m_boxTexView);
 
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
@@ -33,9 +39,10 @@ void CrateApp::renderScene()
 
 		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
 		XMMATRIX translateMat = XMMatrixTranslation(m_translateX, m_translateY, 0.0f);
-		XMMATRIX worldMat = XMMatrixIdentity();
+		XMMATRIX I = XMMatrixIdentity();
+		XMMATRIX worldMat = I;
 
-		ID3DX11EffectTechnique* activeTech = basicEffect->Light1TexTech;
+		ID3DX11EffectTechnique* activeTech = basicEffect->Light0TexTech;
 		D3DX11_TECHNIQUE_DESC techDesc;
 		activeTech->GetDesc(&techDesc);
 		for (UINT p = 0; p < techDesc.Passes; ++p)
@@ -46,9 +53,12 @@ void CrateApp::renderScene()
 			basicEffect->SetWorldInvTranspose(worldMat);
 			basicEffect->SetWorldViewProj(WVP);
 			basicEffect->SetMaterial(m_materials[0].data);
+			basicEffect->SetResource(m_boxTexView);
+			basicEffect->SetTexTransform(I);
 
 			activeTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
 			m_d3dDevContext->DrawIndexed(g_pGlobalSys->objects[0].mesh.indices.size(), 0, 0);
+			//m_d3dDevContext->DrawIndexed(3, 0, 0);
 		}
 	}
 	//Present the backbuffer to the screen

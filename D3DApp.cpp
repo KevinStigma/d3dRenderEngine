@@ -15,8 +15,6 @@ m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndi
 
 D3DApp::~D3DApp()
 {
-	cleanUp();
-	SafeDelete(m_camera);
 }
 
 bool D3DApp::initD3D(HWND windowId, int width, int height)
@@ -140,17 +138,19 @@ void D3DApp::loadObjData()
 	std::vector<Vertex> vertices;
 	const std::vector<float>& positions = g_pGlobalSys->objects[0].mesh.positions;
 	const std::vector<float>& normals = g_pGlobalSys->objects[0].mesh.normals;
+	const std::vector<float>& texs = g_pGlobalSys->objects[0].mesh.texcoords;
 
 	int num_vertex = positions.size() / 3;
 	for (int i = 0; i < num_vertex; i++)
 	{
-		vertices.push_back(Vertex(positions[i * 3], positions[i * 3+1], positions[i * 3+2],
-			normals[i * 3], normals[i * 3+1], normals[i * 3+2],0,0));
+		Vertex v(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
+			normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2], texs[i * 2], texs[i * 2+1]);
+		vertices.push_back(v);
 	}
 	
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex)* num_vertex;
+	vbd.ByteWidth = sizeof(Vertex)* vertices.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
@@ -159,6 +159,7 @@ void D3DApp::loadObjData()
 	HR(m_d3dDevice->CreateBuffer(&vbd, &vinitData, &m_squareVertexBuffer));
 
 	const std::vector<unsigned int>& indices = g_pGlobalSys->objects[0].mesh.indices;
+
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
 	ibd.ByteWidth = sizeof(unsigned int)* indices.size();
@@ -357,4 +358,5 @@ void D3DApp::cleanUp()
 	ReleaseCOM(m_squareIndiceBuffer);
 	Effects::DestroyAll();
 	InputLayouts::destroyAll();
+	SafeDelete(m_camera);
 }
