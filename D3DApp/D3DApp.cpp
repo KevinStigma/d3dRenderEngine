@@ -1,11 +1,13 @@
 #include "D3DApp.h"
 #include "GlobalSys.h"
+#include "../GameTimer.h"
 #include <d3dUtil.h>
 #include <iostream>
 #include <MathHelper.h>
 
 D3DApp::D3DApp() :m_d3dDevice(0), m_d3dDevContext(0), m_swapChain(0),m_depthStencilBuffer(0),m_depthStencilView(0),
-m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_translateX(0), m_translateY(0)
+m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_translateX(0), m_translateY(0),
+m_hasTex(false)
 {
 	m_camera = new Camera;
 	XMStoreFloat4x4(&m_transformMat, XMMatrixIdentity());
@@ -93,11 +95,21 @@ bool D3DApp::initD3D(HWND windowId, int width, int height)
 void D3DApp::initMaterials()
 {
 	float r=0.73725f, g=0.741176f, b=0.74902f;
-	m_materials.resize(1);
+	m_materials.resize(3);
 	m_materials[0].name = "gray";
 	m_materials[0].data.Ambient = XMFLOAT4(r*0.2f,g*0.2f,b*0.2f,1.0f);
 	m_materials[0].data.Diffuse = XMFLOAT4(r*0.4f,g*0.4f,b*0.4f, 1.0f);
 	m_materials[0].data.Specular = XMFLOAT4(r*0.5f,g*0.5f,b*0.5f,16.0f);
+
+	m_materials[1].name = "land";
+	m_materials[1].data.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_materials[1].data.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_materials[1].data.Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
+
+	m_materials[2].name = "wave";
+	m_materials[2].data.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_materials[2].data.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_materials[2].data.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 32.0f);
 }
 
 void D3DApp::initLight()
@@ -139,12 +151,19 @@ void D3DApp::loadObjData()
 	const std::vector<float>& positions = g_pGlobalSys->objects[0].mesh.positions;
 	const std::vector<float>& normals = g_pGlobalSys->objects[0].mesh.normals;
 	const std::vector<float>& texs = g_pGlobalSys->objects[0].mesh.texcoords;
+	if (texs.size())
+		m_hasTex = true;
 
 	int num_vertex = positions.size() / 3;
 	for (int i = 0; i < num_vertex; i++)
 	{
 		Vertex v(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
-			normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2], texs[i * 2], texs[i * 2+1]);
+			normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2],0,0);
+		if (m_hasTex)
+		{
+			v.tex.x = texs[i * 2];
+			v.tex.y = texs[i * 2+1];
+		}
 		vertices.push_back(v);
 	}
 	
@@ -207,7 +226,8 @@ void D3DApp::setRasterizationState()
 {
 	D3D11_RASTERIZER_DESC wfdesc;
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_SOLID; 
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+	//wfdesc.FillMode = D3D11_FILL_WIREFRAME;
 	wfdesc.CullMode = D3D11_CULL_BACK;
 	HRESULT	hr = m_d3dDevice->CreateRasterizerState(&wfdesc, &m_rasterizeState);
 
@@ -272,7 +292,7 @@ void D3DApp::renderScene()
 	m_swapChain->Present(0, 0);
 }
 
-void D3DApp::updateScene(double deltaTime)
+void D3DApp::updateScene(GameTimer*gameTimer)
 {
 }
 

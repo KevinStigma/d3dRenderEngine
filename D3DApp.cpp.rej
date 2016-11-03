@@ -1,0 +1,10 @@
+diff a/D3DApp.cpp b/D3DApp.cpp	(rejected hunks)
+@@ -178,7 +178,7 @@
+ 
+ 	ID3D10Blob*compiledShader = 0;
+ 	ID3D10Blob*compilationMsgs = 0;
+-	HRESULT hr = D3DX11CompileFromFile(L"Effect.fx", 0, 0, 0, "fx_5_0", shaderFlags, 0, 0, &compiledShader, &compilationMsgs,0);
++	HRESULT hr = D3DX11CompileFromFile(L"FX/Basic.fx", 0, 0, 0, "fx_5_0", shaderFlags, 0, 0, &compiledShader, &compilationMsgs,0);
+ 	if (compilationMsgs != 0)
+ 	{
+ 		std::cout << (char*)compilationMsgs->GetBufferPointer() << std::endl;

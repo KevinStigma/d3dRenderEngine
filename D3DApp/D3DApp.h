@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "Effects/Effects.h"
 #include "Vertex.h"
+
+class GameTimer;
 //the class encapsulate the operations about D3D
 class D3DApp
 {
@@ -21,10 +23,10 @@ public:
 	D3DApp();
 	virtual ~D3DApp();
 	bool initD3D(HWND windowId, int width, int height);
-	void initScene(int width, int height);
+	virtual void initScene(int width, int height);
 	virtual void renderScene();
 	virtual void cleanUp();
-	void updateScene(double deltaTime);
+	virtual void updateScene(GameTimer*gameTimer);
 	void resizeD3D(int width, int height);
 	void setTransMat(float*data);
 	void setTranslate(float x,float y);
@@ -51,6 +53,7 @@ protected:
 
 	XMFLOAT4X4 m_transformMat;
 	Camera* m_camera;
+	bool m_hasTex;
 
 	//Light
 	std::vector<DirectionalLight> m_dirLight;

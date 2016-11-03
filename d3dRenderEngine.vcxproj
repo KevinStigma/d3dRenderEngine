@@ -63,7 +63,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;dxerr.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;DXCommon.lib;dxerr.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,14 +79,15 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;d3d11.lib;d3dx11.lib;D3DCompiler.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;d3d11.lib;d3dx11.lib;D3DCompiler.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;DXCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arcball\ArcBall.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CrateApp.cpp" />
-    <ClCompile Include="D3DApp.cpp" />
+    <ClCompile Include="D3DApp\CrateApp.cpp" />
+    <ClCompile Include="D3DApp\D3DApp.cpp" />
+    <ClCompile Include="D3DApp\HillWaveApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
     <ClCompile Include="Effects\Effects.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -141,8 +142,9 @@
     <ClInclude Include="Arcball\ArcBall.h" />
     <ClInclude Include="Arcball\MyArcball.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CrateApp.h" />
-    <ClInclude Include="D3DApp.h" />
+    <ClInclude Include="D3DApp\CrateApp.h" />
+    <ClInclude Include="D3DApp\D3DApp.h" />
+    <ClInclude Include="D3DApp\HillWaveApp.h" />
     <ClInclude Include="Effects\Effects.h" />
     <ClInclude Include="foundation.h" />
     <ClInclude Include="GameTimer.h" />

@@ -42,6 +42,12 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{39201af2-b206-468a-8327-d4d379c62c57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="D3DApp">
+      <UniqueIdentifier>{762c14b0-37f2-47f5-9acb-4bdaa4826f65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{fe725eaf-4e6d-445c-a795-d5712a671f8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -68,9 +74,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RenderWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="D3DApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -89,8 +92,14 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CrateApp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="D3DApp\CrateApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DApp\D3DApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DApp\HillWaveApp.cpp">
+      <Filter>D3DApp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +119,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D3DApp.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameTimer.h">
       <Filter>Header Files</Filter>
@@ -138,8 +144,14 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CrateApp.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="D3DApp\CrateApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\D3DApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\HillWaveApp.h">
+      <Filter>D3DApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

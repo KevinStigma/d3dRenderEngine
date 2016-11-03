@@ -6,8 +6,9 @@
 #include <QMessageBox>
 #include <iostream>
 #include "foundation.h"
-#include "D3DApp.h"
-#include "CrateApp.h"
+#include "D3DApp/D3DApp.h"
+#include "D3DApp/CrateApp.h"
+#include "D3DApp/HillWaveApp.h"
 
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
@@ -15,7 +16,7 @@ RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new CrateApp;
+	m_d3dApp = new HillWaveApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 
@@ -64,14 +65,15 @@ void RenderWidget::paintEvent(QPaintEvent *event)
 	//compute fps
 	m_frameCount++;
 	m_timer.Tick();
-	float elapsedTime = m_timer.TotalTime();
-	if (elapsedTime > 1.0f)
+	static float timeElapsed = 0.0f;
+
+	if (m_timer.TotalTime()-timeElapsed > 1.0f)
 	{
 		topLevelWidget()->setWindowTitle("FPS: " + QString::number(m_frameCount));
 		m_frameCount = 0;
-		m_timer.Reset();
+		timeElapsed += 1.0f;
 	}
-	m_d3dApp->updateScene(m_timer.DeltaTime()*2);
+	m_d3dApp->updateScene(&m_timer);
 	m_d3dApp->setTransMat(m_arcball->Transform.M);
 	m_d3dApp->renderScene();
 	update();

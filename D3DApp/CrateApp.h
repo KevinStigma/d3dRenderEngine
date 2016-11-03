@@ -5,9 +5,9 @@ class CrateApp :public D3DApp
 {
 public:
 	void cleanUp();
+	void renderScene();
 protected:
 	void loadTextures();
-	void renderScene();
 	ID3D11ShaderResourceView* m_boxTexView;
 };
 
