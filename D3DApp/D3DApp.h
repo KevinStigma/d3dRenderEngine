@@ -38,6 +38,8 @@ protected:
 	void createViewport(int width,int height);
 	void setRasterizationState();
 	void buildVertexLayout();
+	void saveAlphaImage(int width, int height, int alpha);
+	ID3D11BlendState* initBlending();
 	virtual void loadTextures();
 
 	ID3D11Device *m_d3dDevice;
@@ -47,6 +49,7 @@ protected:
 	ID3D11DepthStencilView *m_depthStencilView;
 	ID3D11RenderTargetView *m_renderTargetView;
 	ID3D11RasterizerState *m_rasterizeState;
+	ID3D11BlendState* m_blendState;
 
 	ID3D11Buffer *m_squareVertexBuffer;
 	ID3D11Buffer *m_squareIndiceBuffer;

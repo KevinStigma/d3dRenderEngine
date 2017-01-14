@@ -82,6 +82,7 @@ void HillWaveApp::renderScene()
 	m_d3dDevContext->IASetInputLayout(InputLayouts::PosNormal);
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
@@ -95,16 +96,21 @@ void HillWaveApp::renderScene()
 	// Set per frame constants.
 	Effects::BasicFX->SetDirLights(&m_dirLight[0]);
 	Effects::BasicFX->SetEyePosW(eyePosW);
+	Effects::BasicFX->SetFogColor(Colors::Silver);
+	Effects::BasicFX->SetFogStart(15.0f);
+	Effects::BasicFX->SetFogRange(175.0f);
 
-	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light1TexTech;
+
+	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light1TexAlphaClipFogTech;
+
+	XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
+	XMMATRIX translateMat = XMMatrixTranslation(m_translateX, m_translateY, 0.0f);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	activeTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
-		XMMATRIX translateMat = XMMatrixTranslation(m_translateX, m_translateY, 0.0f);
-
+		
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_landVB, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_landIB, DXGI_FORMAT_R32_UINT, 0);
 
@@ -139,8 +145,10 @@ void HillWaveApp::renderScene()
 		Effects::BasicFX->SetMaterial(m_materials[2].data);
 		Effects::BasicFX->SetDiffuseMap(m_wavesMapSRV);
 
+		m_d3dDevContext->OMSetBlendState(m_blendState, blendFactor, 0xffffffff);
 		activeTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
 		m_d3dDevContext->DrawIndexed(3 * m_waves.TriangleCount(), 0, 0);
+		m_d3dDevContext->OMSetBlendState(0, blendFactor, 0xffffffff);
 	}
 
 	HR(m_swapChain->Present(0, 0));
