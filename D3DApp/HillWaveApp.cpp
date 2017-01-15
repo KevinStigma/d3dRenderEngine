@@ -100,7 +100,6 @@ void HillWaveApp::renderScene()
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
 
-
 	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light1TexAlphaClipFogTech;
 
 	XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);

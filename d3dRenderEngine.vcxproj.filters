@@ -101,6 +101,9 @@
     <ClCompile Include="D3DApp\HillWaveApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\MirrorApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -151,6 +154,9 @@
       <Filter>D3DApp</Filter>
     </ClInclude>
     <ClInclude Include="D3DApp\HillWaveApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\MirrorApp.h">
       <Filter>D3DApp</Filter>
     </ClInclude>
   </ItemGroup>
