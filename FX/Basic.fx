@@ -148,7 +148,7 @@ float4 PS(VertexOut pin, uniform int gLightCount, uniform bool gUseTexure, unifo
 
 float4 PS_Color(VertexOut pin) : SV_Target
 {
-	return float4(0,0.502,0.788,0.5);
+	return float4(0,0,0,1.0);
 }
 technique11 Light1
 {

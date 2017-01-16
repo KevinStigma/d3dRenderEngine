@@ -101,7 +101,7 @@ bool D3DApp::initD3D(HWND windowId, int width, int height)
 void D3DApp::initMaterials()
 {
 	float r=0.73725f, g=0.741176f, b=0.74902f;
-	m_materials.resize(4);
+	m_materials.resize(6);
 	m_materials[0].name = "gray";
 	m_materials[0].data.Ambient = XMFLOAT4(r*0.2f,g*0.2f,b*0.2f,1.0f);
 	m_materials[0].data.Diffuse = XMFLOAT4(r*0.4f,g*0.4f,b*0.4f, 1.0f);
@@ -121,6 +121,16 @@ void D3DApp::initMaterials()
 	m_materials[3].data.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_materials[3].data.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_materials[3].data.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
+
+	m_materials[4].name = "mirror";
+	m_materials[4].data.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_materials[4].data.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f);
+	m_materials[4].data.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
+
+	m_materials[5].name = "shadow";
+	m_materials[5].data.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_materials[5].data.Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.5f);
+	m_materials[5].data.Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 16.0f);
 }
 
 void D3DApp::initLight()
@@ -332,6 +342,11 @@ void D3DApp::renderScene()
 
 void D3DApp::updateScene(GameTimer*gameTimer)
 {
+}
+
+void D3DApp::keyPressEvent(QKeyEvent *event)
+{
+
 }
 
 void D3DApp::resizeD3D(int width,int height)

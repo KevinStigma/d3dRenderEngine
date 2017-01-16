@@ -56,7 +56,6 @@ void RenderWidget::resizeEvent(QResizeEvent *event)
 		m_d3dApp->initD3D((HWND)winId(), width(), height());
 		m_d3dApp->initScene(width(), height());
 		m_arcball = new MyArcball(width(), height());
-		//testArcball();
 		m_firstStart = false;
 	}
 	m_d3dApp->resizeD3D(width(), height());
@@ -87,7 +86,9 @@ void RenderWidget::loadObjData()
 
 void RenderWidget::keyPressEvent(QKeyEvent *event)
 {
+	m_d3dApp->keyPressEvent(event);
 }
+
 void RenderWidget::keyReleaseEvent(QKeyEvent *event)
 {
 }

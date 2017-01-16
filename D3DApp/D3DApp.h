@@ -1,5 +1,6 @@
 #ifndef D3DAPP_H
 #define D3DAPP_H
+#include <QKeyEvent>
 #include <d3dUtil.h>
 #include <LightHelper.h>
 #include <d3dx11effect.h>
@@ -22,11 +23,12 @@ protected:
 public:
 	D3DApp();
 	virtual ~D3DApp();
-	bool initD3D(HWND windowId, int width, int height);
+	virtual bool initD3D(HWND windowId, int width, int height);
 	virtual void initScene(int width, int height);
 	virtual void renderScene();
 	virtual void cleanUp();
 	virtual void updateScene(GameTimer*gameTimer);
+	virtual void keyPressEvent(QKeyEvent *event);
 	void resizeD3D(int width, int height);
 	void setTransMat(float*data);
 	void setTranslate(float x,float y);
