@@ -116,6 +116,11 @@ void MirrorApp::cleanUp()
 	ReleaseCOM(m_wallDiffuseMapSRV);
 	ReleaseCOM(m_mirrorDiffuseMapSRV);
 	ReleaseCOM(m_noRenderTargetWritesBS);
+
+	ReleaseCOM(m_markMirrorDSS);
+	ReleaseCOM(m_cullClockwiseRS);
+	ReleaseCOM(m_drawReflectionDSS);
+	ReleaseCOM(m_noDoubleBlendDSS);
 }
 
 void MirrorApp::loadTextures()

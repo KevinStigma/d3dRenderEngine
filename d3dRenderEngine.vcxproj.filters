@@ -104,6 +104,9 @@
     <ClCompile Include="D3DApp\MirrorApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\TessellationApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -159,12 +162,18 @@
     <ClInclude Include="D3DApp\MirrorApp.h">
       <Filter>D3DApp</Filter>
     </ClInclude>
+    <ClInclude Include="D3DApp\TessellationApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
       <Filter>FX</Filter>
     </FxCompile>
     <FxCompile Include="FX\LightHelper.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Tessellation.fx">
       <Filter>FX</Filter>
     </FxCompile>
   </ItemGroup>

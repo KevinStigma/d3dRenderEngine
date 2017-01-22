@@ -20,6 +20,7 @@ public:
 	static void initAll(ID3D11Device* device, ID3DX11EffectTechnique* technique);
 	static void destroyAll();
 	static ID3D11InputLayout* PosNormal;
+	static ID3D11InputLayout* Pos;
 };
 
 #endif

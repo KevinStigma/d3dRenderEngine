@@ -23,3 +23,11 @@ XMMATRIX Camera::getProjMatrix()
 {
 	return camProjection;
 }
+
+void Camera::calViewMatrix(XMFLOAT3 pos,XMFLOAT3 t,XMFLOAT3 u)
+{
+	position = XMFLOAT4(pos.x, pos.y, pos.z, 1.0f);
+	target = XMFLOAT4(t.x, t.y, t.z, 0.0f);
+	up = XMFLOAT4(u.x, u.y, u.z, 0.0f);
+	camView = XMMatrixLookAtLH(XMLoadFloat4(&position), XMLoadFloat4(&target), XMLoadFloat4(&up));
+}

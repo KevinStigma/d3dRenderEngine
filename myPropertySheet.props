@@ -2,8 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <DIRECTX_INCLUDE>G:/DirectX/Include</DIRECTX_INCLUDE>
-    <DIRECTX_LIB>G:/DirectX/Lib/x86</DIRECTX_LIB>
+    <DIRECTX_INCLUDE>D:/DirectX SDK/Include</DIRECTX_INCLUDE>
+    <DIRECTX_LIB>D:/DirectX SDK/Lib/x86</DIRECTX_LIB>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

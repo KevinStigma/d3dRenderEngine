@@ -10,14 +10,14 @@
 #include "D3DApp/CrateApp.h"
 #include "D3DApp/HillWaveApp.h"
 #include "D3DApp/MirrorApp.h"
-
+#include "D3DApp/TessellationApp.h"
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new MirrorApp;
+	m_d3dApp = new TessellationApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 

@@ -35,6 +35,7 @@ bool GlobalSys::loadObj(const std::string& filename)
 	std::vector<tinyobj::shape_t>& objects = g_pGlobalSys->objects;
 	objects.insert(objects.end(), obj_list.begin(), obj_list.end());
 	std::cout << "load " << obj_list.size() << " shapes successfully!" << std::endl;
+	return true;
 }
 
 void GlobalSys::reconNormals(tinyobj::shape_t& shape)
