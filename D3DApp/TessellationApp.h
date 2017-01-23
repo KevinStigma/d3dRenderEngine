@@ -7,7 +7,7 @@ class TessellationApp :public D3DApp
 {
 public:
 	TessellationApp();
-	bool initD3d(HWND windowId, int width, int height);
+	bool initD3D(HWND windowId, int width, int height);
 	void initScene(int width, int height);
 	void updateScene(GameTimer*gameTimer);
 	void renderScene();

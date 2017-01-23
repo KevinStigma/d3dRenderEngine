@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Arcball\ArcBall.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="D3DApp\AltarApp.cpp" />
     <ClCompile Include="D3DApp\CrateApp.cpp" />
     <ClCompile Include="D3DApp\D3DApp.cpp" />
     <ClCompile Include="D3DApp\HillWaveApp.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Arcball\ArcBall.h" />
     <ClInclude Include="Arcball\MyArcball.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="D3DApp\AltarApp.h" />
     <ClInclude Include="D3DApp\CrateApp.h" />
     <ClInclude Include="D3DApp\D3DApp.h" />
     <ClInclude Include="D3DApp\HillWaveApp.h" />

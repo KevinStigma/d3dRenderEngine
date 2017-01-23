@@ -1,6 +1,6 @@
 #include "Vertex.h"
 #include "Effects.h"
-ID3D11InputLayout* InputLayouts::PosNormal = 0;
+ID3D11InputLayout* InputLayouts::PosNorTex = 0;
 ID3D11InputLayout* InputLayouts::Pos = 0;
 void InputLayouts::initAll(ID3D11Device* device, ID3DX11EffectTechnique* technique)
 {
@@ -14,7 +14,7 @@ void InputLayouts::initAll(ID3D11Device* device, ID3DX11EffectTechnique* techniq
 	D3DX11_PASS_DESC passDesc;
 	Effects::BasicFX->Light1Tech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(device->CreateInputLayout(vertexDesc, 3, passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, &PosNormal));
+		passDesc.IAInputSignatureSize, &PosNorTex));
 
 
 	const D3D11_INPUT_ELEMENT_DESC vertexDesc2[] =
@@ -29,6 +29,6 @@ void InputLayouts::initAll(ID3D11Device* device, ID3DX11EffectTechnique* techniq
 
 void InputLayouts::destroyAll()
 {
-	ReleaseCOM(PosNormal);
+	ReleaseCOM(PosNorTex);
 	ReleaseCOM(Pos);
 }

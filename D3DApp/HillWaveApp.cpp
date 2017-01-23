@@ -79,7 +79,7 @@ void HillWaveApp::renderScene()
 	m_d3dDevContext->ClearRenderTargetView(m_renderTargetView, reinterpret_cast<const float*>(&Colors::LightSteelBlue));
 	m_d3dDevContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	m_d3dDevContext->IASetInputLayout(InputLayouts::PosNormal);
+	m_d3dDevContext->IASetInputLayout(InputLayouts::PosNorTex);
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };

@@ -136,20 +136,20 @@ void D3DApp::initMaterials()
 void D3DApp::initLight()
 {
 	m_dirLight.resize(3);
-	m_dirLight[0].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); 
-	m_dirLight[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[0].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_dirLight[0].Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f); 
+	m_dirLight[0].Diffuse = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_dirLight[0].Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_dirLight[0].Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
 
-	m_dirLight[1].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[1].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[1].Direction = XMFLOAT3(-0.57735f, 0.57735f, -0.57735f);
+	m_dirLight[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_dirLight[1].Diffuse = XMFLOAT4(0.20f, 0.20f, 0.20f, 1.0f);
+	m_dirLight[1].Specular = XMFLOAT4(0.25f, 0.25f, 0.25f, 1.0f);
+	m_dirLight[1].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
 
-	m_dirLight[2].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[2].Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_dirLight[2].Direction = XMFLOAT3(-0.57735f, 0.57735f, -0.57735f);
+	m_dirLight[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_dirLight[2].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_dirLight[2].Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_dirLight[2].Direction = XMFLOAT3(0.0f, -0.707f, -0.707f);
 
 	m_spotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_spotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
@@ -313,7 +313,7 @@ void D3DApp::renderScene()
 		UINT offset = 0;
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_d3dDevContext->IASetInputLayout(InputLayouts::PosNormal);
+		m_d3dDevContext->IASetInputLayout(InputLayouts::PosNorTex);
 		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);

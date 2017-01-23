@@ -9,7 +9,7 @@ TessellationApp::TessellationApp() :m_quadPatchVB(NULL), m_wireFrameRS(NULL), m_
 	m_radius = 80.0f;
 }
 
-bool TessellationApp::initD3d(HWND windowId, int width, int height)
+bool TessellationApp::initD3D(HWND windowId, int width, int height)
 {
 	if (!D3DApp::initD3D(windowId, width, height))
 		return false;

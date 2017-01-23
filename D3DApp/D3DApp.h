@@ -34,7 +34,7 @@ public:
 	void setTranslate(float x,float y);
 	void loadObjData();
 protected:
-	void initMaterials();
+	virtual void initMaterials();
 	void initLight();
 	void loadShaders();
 	void createViewport(int width,int height);

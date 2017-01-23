@@ -107,6 +107,9 @@
     <ClCompile Include="D3DApp\TessellationApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\AltarApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -163,6 +166,9 @@
       <Filter>D3DApp</Filter>
     </ClInclude>
     <ClInclude Include="D3DApp\TessellationApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\AltarApp.h">
       <Filter>D3DApp</Filter>
     </ClInclude>
   </ItemGroup>

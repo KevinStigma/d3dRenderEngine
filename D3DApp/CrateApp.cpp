@@ -34,7 +34,7 @@ void CrateApp::renderScene()
 		UINT offset = 0;
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_d3dDevContext->IASetInputLayout(InputLayouts::PosNormal);
+		m_d3dDevContext->IASetInputLayout(InputLayouts::PosNorTex);
 		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		XMMATRIX rotScaleMat = XMLoadFloat4x4(&m_transformMat);
