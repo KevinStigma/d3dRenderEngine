@@ -23,7 +23,7 @@ void TessellationApp::updateScene(GameTimer*gameTimer)
 	float z = m_radius*sinf(m_phi)*sinf(m_theta);
 	float y = m_radius*cosf(m_phi);
 
-	m_camera->calViewMatrix(XMFLOAT3(x, y, z), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
+	//m_camera->calViewMatrix(XMFLOAT3(x, y, z), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
 }
 
 void TessellationApp::initScene(int width, int height)
