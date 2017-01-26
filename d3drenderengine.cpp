@@ -32,7 +32,7 @@ void d3dRenderEngine::keyPressEvent(QKeyEvent *event)
 
 void d3dRenderEngine::on_actionLoad_Obj_triggered()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Import obj"), "../Data/", "obj files(*.obj)", 0);
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import obj"), "./Data/", "obj files(*.obj)", 0);
 	if (!filename.size())
 		return;
 	g_pGlobalSys->loadObj(filename.toStdString());

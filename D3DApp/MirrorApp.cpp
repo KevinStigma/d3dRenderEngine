@@ -126,13 +126,13 @@ void MirrorApp::cleanUp()
 void MirrorApp::loadTextures()
 {
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/checkboard.dds", 0, 0, &m_floorDiffuseMapSRV, 0));
+		L"./Data/Images/checkboard.dds", 0, 0, &m_floorDiffuseMapSRV, 0));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/brick01.dds", 0, 0, &m_wallDiffuseMapSRV, 0));
+		L"./Data/Images/brick01.dds", 0, 0, &m_wallDiffuseMapSRV, 0));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/ice.dds", 0, 0, &m_mirrorDiffuseMapSRV, 0));
+		L"./Data/Images/ice.dds", 0, 0, &m_mirrorDiffuseMapSRV, 0));
 }
 
 void MirrorApp::buildRoomGeometryBuffers()
@@ -209,7 +209,7 @@ void MirrorApp::buildRoomGeometryBuffers()
 }
 void MirrorApp::buildSkullGeometryBuffers()
 {
-	std::ifstream fin("../Data/Mesh/skull.txt");
+	std::ifstream fin("./Data/Mesh/skull.txt");
 
 	if (!fin)
 	{

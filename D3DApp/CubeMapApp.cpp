@@ -17,7 +17,7 @@ void CubeMapApp::cleanUp()
 void CubeMapApp::initScene(int width, int height)
 {
 	AltarApp::initScene(width, height);
-	m_sky = new Sky(m_d3dDevice, L"../Data/Images/desertcube1024.dds", 5000.0f);
+	m_sky = new Sky(m_d3dDevice, L"./Data/Images/desertcube1024.dds", 5000.0f);
 
 }
 
@@ -50,15 +50,15 @@ void CubeMapApp::renderScene()
 	{
 	case 1:
 		activeTexTech = Effects::BasicFX->Light1TexTech;
-		activeSkullTech = Effects::BasicFX->Light1Tech;
+		activeSkullTech = Effects::BasicFX->Light1RefTech;
 		break;
 	case 2:
 		activeTexTech = Effects::BasicFX->Light2TexTech;
-		activeSkullTech = Effects::BasicFX->Light2Tech;
+		activeSkullTech = Effects::BasicFX->Light2RefTech;
 		break;
 	case 3:
 		activeTexTech = Effects::BasicFX->Light3TexTech;
-		activeSkullTech = Effects::BasicFX->Light3Tech;
+		activeSkullTech = Effects::BasicFX->Light3RefTech;
 		break;
 	}
 
@@ -151,7 +151,8 @@ void CubeMapApp::renderScene()
 		Effects::BasicFX->SetWorld(world);
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetMaterial(m_materials[4].data);
+		Effects::BasicFX->SetMaterial(m_materials[5].data);
+		Effects::BasicFX->SetCubeMap(m_sky->CubeMapSRV());
 
 		activeSkullTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
 		m_d3dDevContext->DrawIndexed(m_skullIndexCount, 0, 0);

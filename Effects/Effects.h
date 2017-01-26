@@ -35,6 +35,7 @@ public:
 	void SetMaterial(const Material& mat)               { Mat->SetRawValue(&mat, 0, sizeof(Material)); }
 	void SetDiffuseMap(ID3D11ShaderResourceView* rv)		{ DiffuseMap->SetResource(rv); }
 	void SetFogColor(const FXMVECTOR v)                 { FogColor->SetFloatVector(reinterpret_cast<const float*>(&v)); }
+	void SetCubeMap(ID3D11ShaderResourceView* cubemap)  { CubeMap->SetResource(cubemap); }
 	void SetFogStart(float f)                           { FogStart->SetFloat(f); }
 	void SetFogRange(float f)                           { FogRange->SetFloat(f); }
 
@@ -46,6 +47,9 @@ public:
 	ID3DX11EffectTechnique* Light1TexTech;
 	ID3DX11EffectTechnique*	Light2TexTech;
 	ID3DX11EffectTechnique*	Light3TexTech;
+	ID3DX11EffectTechnique* Light1RefTech;
+	ID3DX11EffectTechnique* Light2RefTech;
+	ID3DX11EffectTechnique* Light3RefTech;
 	ID3DX11EffectTechnique*	ColorTech;
 	ID3DX11EffectTechnique* Light1TexAlphaClipFogTech;
 
@@ -61,6 +65,7 @@ public:
 	ID3DX11EffectScalarVariable* FogRange;
 
 	ID3DX11EffectShaderResourceVariable* DiffuseMap;
+	ID3DX11EffectShaderResourceVariable* CubeMap;
 };
 #pragma endregion
 

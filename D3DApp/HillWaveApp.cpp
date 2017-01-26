@@ -156,10 +156,10 @@ void HillWaveApp::renderScene()
 void HillWaveApp::loadTextures()
 {
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/grass.dds", 0, 0, &m_grassMapSRV, 0));
+		L"./Data/Images/grass.dds", 0, 0, &m_grassMapSRV, 0));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/water2.dds", 0, 0, &m_wavesMapSRV, 0));
+		L"./Data/Images/water2.dds", 0, 0, &m_wavesMapSRV, 0));
 }
 
 float GetHillHeight(float x, float z)

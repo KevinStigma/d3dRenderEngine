@@ -194,5 +194,8 @@
     <FxCompile Include="FX\Tessellation.fx">
       <Filter>FX</Filter>
     </FxCompile>
+    <FxCompile Include="FX\Sky.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

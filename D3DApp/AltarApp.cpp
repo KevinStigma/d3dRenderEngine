@@ -21,17 +21,17 @@ void AltarApp::initScene(int width, int height)
 void AltarApp::loadTextures()
 {
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/floor.dds", 0, 0, &m_floorTexSRV, 0));
+		L"./Data/Images/floor.dds", 0, 0, &m_floorTexSRV, 0));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/stone.dds", 0, 0, &m_stoneTexSRV, 0));
+		L"./Data/Images/stone.dds", 0, 0, &m_stoneTexSRV, 0));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/bricks.dds", 0, 0, &m_brickTexSRV, 0));
+		L"./Data/Images/bricks.dds", 0, 0, &m_brickTexSRV, 0));
 }
 void AltarApp::initMaterials()
 {
-	m_materials.resize(5);
+	m_materials.resize(6);
 	m_materials[0].name = "grid";
 	m_materials[0].data.Ambient = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
 	m_materials[0].data.Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
@@ -56,6 +56,13 @@ void AltarApp::initMaterials()
 	m_materials[4].data.Ambient = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
 	m_materials[4].data.Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
 	m_materials[4].data.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
+	m_materials[4].data.Reflect = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
+
+	m_materials[5].name = "reflect";
+	m_materials[5].data.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_materials[5].data.Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_materials[5].data.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
+	m_materials[5].data.Reflect = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
 }
 
 void AltarApp::updateScene(GameTimer*gameTimer)
@@ -395,11 +402,11 @@ void AltarApp::buildShapeGeometryBuffers()
 
 void AltarApp::buildSkullGeometryBuffers()
 {
-	std::ifstream fin("../Data/Mesh/skull.txt");
+	std::ifstream fin("./Data/Mesh/skull.txt");
 
 	if (!fin)
 	{
-		MessageBox(0, L"../Data/Mesh/skull.txt not found.", 0, 0);
+		MessageBox(0, L"./Data/Mesh/skull.txt not found.", 0, 0);
 		return;
 	}
 

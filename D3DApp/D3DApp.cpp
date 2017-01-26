@@ -237,7 +237,7 @@ void D3DApp::saveAlphaImage(int width, int height, int alpha)
 {
 	QImage image(width, height,QImage::Format_ARGB32);
 	image.fill(QColor(0, 127, 202, 0).rgba());
-	image.save("../Data/Images/water2.bmp");
+	image.save("./Data/Images/water2.bmp");
 }
 
 void D3DApp::buildVertexLayout()

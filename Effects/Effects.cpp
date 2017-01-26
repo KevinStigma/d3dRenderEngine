@@ -49,6 +49,11 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	Light1TexTech	  = mFX->GetTechniqueByName("Light1Tex");
 	Light2TexTech     = mFX->GetTechniqueByName("Light2Tex");
 	Light3TexTech     = mFX->GetTechniqueByName("Light3Tex");
+
+	Light1RefTech	  = mFX->GetTechniqueByName("Light1Reflect");
+	Light2RefTech     = mFX->GetTechniqueByName("Light2Reflect");
+	Light3RefTech     = mFX->GetTechniqueByName("Light3Reflect");
+
 	Light1TexAlphaClipFogTech = mFX->GetTechniqueByName("Light1TexAlphaClipFog");
 	ColorTech = mFX->GetTechniqueByName("Color");
 
@@ -59,6 +64,7 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	DirLights         = mFX->GetVariableByName("gDirLights");
 	Mat               = mFX->GetVariableByName("gMaterial");
 	DiffuseMap		  = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
+	CubeMap			  = mFX->GetVariableByName("gCubeMap")->AsShaderResource();
 	TexTransform	  = mFX->GetVariableByName("gTexTransform")->AsMatrix();
 	FogColor = mFX->GetVariableByName("gFogColor")->AsVector();
 	FogStart = mFX->GetVariableByName("gFogStart")->AsScalar();

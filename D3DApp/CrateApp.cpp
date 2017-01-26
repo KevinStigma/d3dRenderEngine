@@ -10,7 +10,7 @@ void CrateApp::cleanUp()
 void CrateApp::loadTextures()
 {
 	HR(D3DX11CreateShaderResourceViewFromFile(m_d3dDevice,
-		L"../Data/Images/box1.jpg",0,0,&m_boxTexView,0));
+		L"./Data/Images/box1.jpg",0,0,&m_boxTexView,0));
 }
 
 void CrateApp::renderScene()
