@@ -2,9 +2,10 @@
 #include <iostream>
 XMMATRIX camView;
 XMMATRIX camProjection;
+XMMATRIX camViewProj;
 void Camera::init(int w,int h)
 {
-	fov = 0.25*3.14f;
+	fov = 0.25f* XM_PI;
 	zNear = 0.01f;
 	zFar = 1000.0f;
 	position = XMFLOAT3(0.0f, 0.0f, -50.0);
@@ -16,15 +17,21 @@ void Camera::init(int w,int h)
 	height = h;
 
 	camProjection = XMMatrixPerspectiveFovLH(fov, (float)width / height, zNear, zFar);
+	camViewProj = camView*camProjection;
 }
 
-XMMATRIX Camera::getViewMatrix()
+XMMATRIX Camera::getViewMatrix()const 
 {
 	return camView;
 }
-XMMATRIX Camera::getProjMatrix()
+XMMATRIX Camera::getProjMatrix()const
 {
 	return camProjection;
+}
+
+XMMATRIX Camera::getViewProjMatrix()const
+{
+	return camViewProj;
 }
 
 void Camera::updateViewMatrix()
@@ -50,6 +57,7 @@ void Camera::updateViewMatrix()
 	camView(3, 0) = -XMVectorGetX(XMVector3Dot(Q, u));
 	camView(3, 1) = -XMVectorGetX(XMVector3Dot(Q, v));
 	camView(3, 2) = -XMVectorGetX(XMVector3Dot(Q, w));
+	camViewProj = camView*camProjection;
 }
 
 void Camera::updateRight()

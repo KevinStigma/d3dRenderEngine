@@ -94,15 +94,32 @@ TessellationEffect::~TessellationEffect()
 }
 #pragma endregion
 
+#pragma region SkyEffect
+SkyEffect::SkyEffect(ID3D11Device* device, const std::wstring& filename)
+: Effect(device, filename)
+{
+	SkyTech = mFX->GetTechniqueByName("SkyTech");
+	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+	CubeMap = mFX->GetVariableByName("gCubeMap")->AsShaderResource();
+}
+
+SkyEffect::~SkyEffect()
+{
+}
+#pragma endregion
+
+
 #pragma region Effects
 
 BasicEffect* Effects::BasicFX = 0;
 TessellationEffect * Effects::TessellationFX = 0;
+SkyEffect* Effects::SkyFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
 	BasicFX = new BasicEffect(device, L"FX/Basic.fx");
 	TessellationFX = new TessellationEffect(device, L"FX/Tessellation.fx");
+	SkyFX = new SkyEffect(device,L"FX/Sky.fx");
 }
 
 void Effects::DestroyAll()

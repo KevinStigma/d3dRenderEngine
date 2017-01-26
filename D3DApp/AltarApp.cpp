@@ -227,16 +227,16 @@ void AltarApp::keyPressEvent(QKeyEvent* event)
 		m_camera->walkRight(-0.2f);
 		break;
 	case Qt::Key_W:
-		m_camera->rotateRight(-MathHelper::Pi / 36.0f);
+		m_camera->rotateRight(-MathHelper::Pi / 72.0f);
 		break;
 	case Qt::Key_S:
-		m_camera->rotateRight(MathHelper::Pi / 36.0f);
+		m_camera->rotateRight(MathHelper::Pi / 72.0f);
 		break;
 	case Qt::Key_A:
-		m_camera->rotateY(-MathHelper::Pi / 36.0f);
+		m_camera->rotateY(-MathHelper::Pi / 72.0f);
 		break;
 	case Qt::Key_D:
-		m_camera->rotateY(MathHelper::Pi / 36.0f);
+		m_camera->rotateY(MathHelper::Pi / 72.0f);
 		break;
 	case Qt::Key_Q:
 		m_camera->walkUp(0.2f);

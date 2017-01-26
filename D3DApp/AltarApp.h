@@ -7,11 +7,11 @@ class AltarApp:public D3DApp
 {
 public:
 	AltarApp();
-	void initScene(int width, int height);
-	void updateScene(GameTimer*gameTimer);
-	void renderScene();
+	virtual void initScene(int width, int height);
+	virtual void updateScene(GameTimer*gameTimer);
+	virtual void renderScene();
+	virtual void cleanUp();
 	void keyPressEvent(QKeyEvent* event);
-	void cleanUp();
 protected:
 	void buildShapeGeometryBuffers();
 	void buildSkullGeometryBuffers();
@@ -19,8 +19,8 @@ protected:
 	void initMaterials();
 	void loadTextures();
 
-	int m_boxVertexOffset;
 	int m_gridVertexOffset;
+	int m_boxVertexOffset;
 	int m_sphereVertexOffset;
 	int m_cylinderVertexOffset;
 

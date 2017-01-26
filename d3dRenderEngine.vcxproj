@@ -156,6 +156,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3DApp\AltarApp.cpp" />
     <ClCompile Include="D3DApp\CrateApp.cpp" />
+    <ClCompile Include="D3DApp\CubeMapApp.cpp" />
     <ClCompile Include="D3DApp\D3DApp.cpp" />
     <ClCompile Include="D3DApp\HillWaveApp.cpp" />
     <ClCompile Include="D3DApp\MirrorApp.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="GlobalSys.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +242,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3DApp\AltarApp.h" />
     <ClInclude Include="D3DApp\CrateApp.h" />
+    <ClInclude Include="D3DApp\CubeMapApp.h" />
     <ClInclude Include="D3DApp\D3DApp.h" />
     <ClInclude Include="D3DApp\HillWaveApp.h" />
     <ClInclude Include="D3DApp\MirrorApp.h" />
@@ -249,6 +252,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
     <ClInclude Include="GlobalSys.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="Vertex.h" />
     <CustomBuild Include="RenderWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

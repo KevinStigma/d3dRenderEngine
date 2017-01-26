@@ -2,12 +2,14 @@
 #define ZYK_CAMERA_H
 #include <d3d11.h>
 #include <xnamath.h>
+//#include "MathHelper.h" this problem will be left to solve
 class Camera
 {
 public:
 	void init(int w,int h);
-	XMMATRIX getViewMatrix();
-	XMMATRIX getProjMatrix();
+	XMMATRIX getViewMatrix()const;
+	XMMATRIX getProjMatrix()const;
+	XMMATRIX getViewProjMatrix()const;
 	void walkForward(float d);
 	void walkRight(float d);
 	void walkUp(float d);
