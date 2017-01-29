@@ -6,13 +6,15 @@
 class Camera
 {
 public:
-	void init(int w,int h);
+	void init();
 	XMMATRIX getViewMatrix()const;
 	XMMATRIX getProjMatrix()const;
 	XMMATRIX getViewProjMatrix()const;
 	void walkForward(float d);
 	void walkRight(float d);
 	void walkUp(float d);
+	void lookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp);
+	void setLens(float fovY, float aspect, float zn, float zf);
 	void updateViewMatrix();
 	void updateRight();
 	void rotateY(float angle);
@@ -22,10 +24,14 @@ public:
 	XMFLOAT3 up;
 	XMFLOAT3 right;
 	XMFLOAT3 look;
+	XMFLOAT4X4 mView;
+	XMFLOAT4X4 mProj;
+	XMFLOAT4X4 mViewProj;
 	float fov;
 	float zNear;
 	float zFar;
-	int width, height;
+	float aspectRatio;
+	
 };
 
 #endif

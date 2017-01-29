@@ -1,9 +1,7 @@
 #include "Camera.h"
 #include <iostream>
-XMMATRIX camView;
-XMMATRIX camProjection;
-XMMATRIX camViewProj;
-void Camera::init(int w,int h)
+
+void Camera::init()
 {
 	fov = 0.25f* XM_PI;
 	zNear = 0.01f;
@@ -12,31 +10,53 @@ void Camera::init(int w,int h)
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	look = XMFLOAT3(0.0f, 0.0f, 1.0f);
 	updateRight();
-	updateViewMatrix();
-	width = w;
-	height = h;
 
-	camProjection = XMMatrixPerspectiveFovLH(fov, (float)width / height, zNear, zFar);
-	camViewProj = camView*camProjection;
+	aspectRatio = 800.f/600;
+	setLens(fov, aspectRatio, zNear, zFar);
+	
+	updateViewMatrix();
 }
 
 XMMATRIX Camera::getViewMatrix()const 
 {
-	return camView;
+	return XMLoadFloat4x4(&mView);
 }
 XMMATRIX Camera::getProjMatrix()const
 {
-	return camProjection;
+	return XMLoadFloat4x4(&mProj);
 }
 
 XMMATRIX Camera::getViewProjMatrix()const
 {
-	return camViewProj;
+	return XMLoadFloat4x4(&mViewProj);
+}
+
+void Camera::setLens(float fovY, float aspect, float zn, float zf)
+{
+	// cache properties
+	fov = fovY;
+	aspectRatio = aspect;
+	zNear = zn;
+	zFar = zf;
+
+	XMStoreFloat4x4(&mProj,XMMatrixPerspectiveFovLH(fov, aspectRatio, zNear, zFar));
+}
+
+void Camera::lookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp)
+{
+	XMVECTOR L = XMVector3Normalize(XMVectorSubtract(target, pos));
+	XMVECTOR R = XMVector3Normalize(XMVector3Cross(worldUp, L));
+	XMVECTOR U = XMVector3Cross(L, R);
+
+	XMStoreFloat3(&position, pos);
+	XMStoreFloat3(&look, L);
+	XMStoreFloat3(&right, R);
+	XMStoreFloat3(&up, U);
 }
 
 void Camera::updateViewMatrix()
 {
-	camView = XMMatrixIdentity();
+	XMMATRIX camView = XMMatrixIdentity();
 	camView(0, 0) = right.x;
 	camView(1, 0) = right.y;
 	camView(2, 0) = right.z;
@@ -57,7 +77,10 @@ void Camera::updateViewMatrix()
 	camView(3, 0) = -XMVectorGetX(XMVector3Dot(Q, u));
 	camView(3, 1) = -XMVectorGetX(XMVector3Dot(Q, v));
 	camView(3, 2) = -XMVectorGetX(XMVector3Dot(Q, w));
-	camViewProj = camView*camProjection;
+
+	XMMATRIX camViewProj = camView*XMLoadFloat4x4(&mProj);
+	XMStoreFloat4x4(&mView, camView);
+	XMStoreFloat4x4(&mViewProj, camViewProj);
 }
 
 void Camera::updateRight()

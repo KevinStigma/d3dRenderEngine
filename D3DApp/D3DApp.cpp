@@ -219,18 +219,17 @@ void D3DApp::loadShaders()
 void D3DApp::createViewport(int width, int height)
 {
 	//Create the Viewport
-	D3D11_VIEWPORT viewport;
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&m_screenViewport, sizeof(D3D11_VIEWPORT));
 
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = width;
-	viewport.Height = height;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	m_screenViewport.TopLeftX = 0;
+	m_screenViewport.TopLeftY = 0;
+	m_screenViewport.Width = width;
+	m_screenViewport.Height = height;
+	m_screenViewport.MinDepth = 0.0f;
+	m_screenViewport.MaxDepth = 1.0f;
 
 	//Set the Viewport
-	m_d3dDevContext->RSSetViewports(1, &viewport);
+	m_d3dDevContext->RSSetViewports(1, &m_screenViewport);
 }
 
 void D3DApp::saveAlphaImage(int width, int height, int alpha)
@@ -284,7 +283,7 @@ void D3DApp::setRasterizationState()
 
 void D3DApp::initScene(int width,int height)
 {
-	m_camera->init(width, height);
+	m_camera->init();
 	loadShaders();
 	loadTextures();
 	buildVertexLayout();

@@ -44,6 +44,7 @@ protected:
 	ID3D11BlendState* initBlending();
 	virtual void loadTextures();
 
+	D3D11_VIEWPORT m_screenViewport;
 	ID3D11Device *m_d3dDevice;
 	ID3D11DeviceContext *m_d3dDevContext;
 	IDXGISwapChain *m_swapChain;
