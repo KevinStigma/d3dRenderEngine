@@ -168,7 +168,7 @@ void D3DApp::initLight()
 //now for convenient, we only use the first object to generate buffers
 void D3DApp::loadObjData()
 {
-	std::vector<Vertex> vertices;
+	std::vector<Vertex::Basic32> vertices;
 	const std::vector<float>& positions = g_pGlobalSys->objects[0].mesh.positions;
 	const std::vector<float>& normals = g_pGlobalSys->objects[0].mesh.normals;
 	const std::vector<float>& texs = g_pGlobalSys->objects[0].mesh.texcoords;
@@ -178,7 +178,7 @@ void D3DApp::loadObjData()
 	int num_vertex = positions.size() / 3;
 	for (int i = 0; i < num_vertex; i++)
 	{
-		Vertex v(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
+		Vertex::Basic32 v(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
 			normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2],0,0);
 		if (m_hasTex)
 		{
@@ -190,7 +190,7 @@ void D3DApp::loadObjData()
 	
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex)* vertices.size();
+	vbd.ByteWidth = sizeof(Vertex::Basic32)* vertices.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
@@ -241,7 +241,7 @@ void D3DApp::saveAlphaImage(int width, int height, int alpha)
 
 void D3DApp::buildVertexLayout()
 {
-	InputLayouts::initAll(m_d3dDevice,Effects::BasicFX->Light1Tech);
+	InputLayouts::initAll(m_d3dDevice);
 }
 
 ID3D11BlendState* D3DApp::initBlending()
@@ -308,7 +308,7 @@ void D3DApp::renderScene()
 		basicEffect->SetDirLights(&m_dirLight[0]);
 		basicEffect->SetEyePosW(eyePosW);
 
-		UINT stride = sizeof(Vertex);
+		UINT stride = sizeof(Vertex::Basic32);
 		UINT offset = 0;
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);

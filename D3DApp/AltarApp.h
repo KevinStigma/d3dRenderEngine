@@ -11,13 +11,13 @@ public:
 	virtual void updateScene(GameTimer*gameTimer);
 	virtual void renderScene();
 	virtual void cleanUp();
-	void keyPressEvent(QKeyEvent* event);
+	virtual void keyPressEvent(QKeyEvent* event);
 protected:
 	void buildShapeGeometryBuffers();
 	void buildSkullGeometryBuffers();
 	void initWorldMatrix();
 	void initMaterials();
-	void loadTextures();
+	virtual void loadTextures();
 
 	int m_gridVertexOffset;
 	int m_boxVertexOffset;

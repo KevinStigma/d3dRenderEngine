@@ -30,7 +30,7 @@ void CrateApp::renderScene()
 		basicEffect->SetDirLights(&m_dirLight[0]);
 		basicEffect->SetEyePosW(eyePosW);
 
-		UINT stride = sizeof(Vertex);
+		UINT stride = sizeof(Vertex::Basic32);
 		UINT offset = 0;
 		m_d3dDevContext->IASetVertexBuffers(0, 1, &m_squareVertexBuffer, &stride, &offset);
 		m_d3dDevContext->IASetIndexBuffer(m_squareIndiceBuffer, DXGI_FORMAT_R32_UINT, 0);

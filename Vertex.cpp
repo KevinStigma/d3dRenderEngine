@@ -2,7 +2,8 @@
 #include "Effects.h"
 ID3D11InputLayout* InputLayouts::PosNorTex = 0;
 ID3D11InputLayout* InputLayouts::Pos = 0;
-void InputLayouts::initAll(ID3D11Device* device, ID3DX11EffectTechnique* technique)
+ID3D11InputLayout* InputLayouts::PosNormalTexTan = 0;
+void InputLayouts::initAll(ID3D11Device* device)
 {
 	const D3D11_INPUT_ELEMENT_DESC vertexDesc[3] =
 	{
@@ -25,6 +26,19 @@ void InputLayouts::initAll(ID3D11Device* device, ID3DX11EffectTechnique* techniq
 	Effects::TessellationFX->TessTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(device->CreateInputLayout(vertexDesc2, 1, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, &Pos));
+
+
+	const D3D11_INPUT_ELEMENT_DESC vertexDesc3[4] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	Effects::NormalMapFX->Light1Tech->GetPassByIndex(0)->GetDesc(&passDesc);
+	HR(device->CreateInputLayout(vertexDesc3, 4, passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, &PosNormalTexTan));
 }
 
 void InputLayouts::destroyAll()

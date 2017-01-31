@@ -13,13 +13,14 @@
 #include "D3DApp/TessellationApp.h"
 #include "D3DApp/AltarApp.h"
 #include "D3DApp/CubeMapApp.h"
+#include "D3DApp/NormalDisplacementMapApp.h"
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new CubeMapApp;
+	m_d3dApp = new NormalDisplacementMapApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 }

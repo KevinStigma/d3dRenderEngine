@@ -38,7 +38,7 @@ void HillWaveApp::updateScene(GameTimer* gameTimer)
 	D3D11_MAPPED_SUBRESOURCE mappedData;
 	HR(m_d3dDevContext->Map(m_wavesVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
 
-	Vertex* v = reinterpret_cast<Vertex*>(mappedData.pData);
+	Vertex::Basic32* v = reinterpret_cast<Vertex::Basic32*>(mappedData.pData);
 	for (UINT i = 0; i < m_waves.VertexCount(); ++i)
 	{
 		v[i].pos = m_waves[i];
@@ -83,7 +83,7 @@ void HillWaveApp::renderScene()
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	UINT stride = sizeof(Vertex);
+	UINT stride = sizeof(Vertex::Basic32);
 	UINT offset = 0;
 
 	XMMATRIX view = m_camera->getViewMatrix();
@@ -197,7 +197,7 @@ void HillWaveApp::buildLandGeometryBuffers()
 	// each vertex.  
 	//
 
-	std::vector<Vertex> vertices(grid.Vertices.size());
+	std::vector<Vertex::Basic32> vertices(grid.Vertices.size());
 	for (size_t i = 0; i < grid.Vertices.size(); ++i)
 	{
 		XMFLOAT3 p = grid.Vertices[i].Position;
@@ -211,7 +211,7 @@ void HillWaveApp::buildLandGeometryBuffers()
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex) * grid.Vertices.size();
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * grid.Vertices.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
@@ -239,7 +239,7 @@ void HillWaveApp::buildWaveGeometryBuffers()
 	// we will be updating the data every time step of the simulation.
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_DYNAMIC;
-	vbd.ByteWidth = sizeof(Vertex) * m_waves.VertexCount();
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * m_waves.VertexCount();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vbd.MiscFlags = 0;

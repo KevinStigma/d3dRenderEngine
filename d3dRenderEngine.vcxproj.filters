@@ -116,6 +116,9 @@
     <ClCompile Include="Sky.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\NormalDisplacementMapApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Sky.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\NormalDisplacementMapApp.h">
+      <Filter>D3DApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

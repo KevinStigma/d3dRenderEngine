@@ -77,7 +77,7 @@ void AltarApp::renderScene()
 	m_d3dDevContext->IASetInputLayout(InputLayouts::PosNorTex);
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT stride = sizeof(Vertex);
+	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT offset = 0;
 
 
@@ -184,6 +184,7 @@ void AltarApp::renderScene()
 		}
 	}
 
+	stride = sizeof(Vertex::Basic32);
 	activeSkullTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
@@ -338,7 +339,7 @@ void AltarApp::buildShapeGeometryBuffers()
 	// vertices of all the meshes into one vertex buffer.
 	//
 
-	std::vector<Vertex> vertices(totalVertexCount);
+	std::vector<Vertex::PosNormalTexTan> vertices(totalVertexCount);
 
 	UINT k = 0;
 	for (size_t i = 0; i < box.Vertices.size(); ++i, ++k)
@@ -346,6 +347,7 @@ void AltarApp::buildShapeGeometryBuffers()
 		vertices[k].pos = box.Vertices[i].Position;
 		vertices[k].normal = box.Vertices[i].Normal;
 		vertices[k].tex = box.Vertices[i].TexC;
+		vertices[k].tangentU = box.Vertices[i].TangentU;
 	}
 
 	for (size_t i = 0; i < grid.Vertices.size(); ++i, ++k)
@@ -353,6 +355,7 @@ void AltarApp::buildShapeGeometryBuffers()
 		vertices[k].pos = grid.Vertices[i].Position;
 		vertices[k].normal = grid.Vertices[i].Normal;
 		vertices[k].tex = grid.Vertices[i].TexC;
+		vertices[k].tangentU = grid.Vertices[i].TangentU;
 	}
 
 	for (size_t i = 0; i < sphere.Vertices.size(); ++i, ++k)
@@ -360,6 +363,7 @@ void AltarApp::buildShapeGeometryBuffers()
 		vertices[k].pos = sphere.Vertices[i].Position;
 		vertices[k].normal = sphere.Vertices[i].Normal;
 		vertices[k].tex = sphere.Vertices[i].TexC;
+		vertices[k].tangentU = sphere.Vertices[i].TangentU;
 	}
 
 	for (size_t i = 0; i < cylinder.Vertices.size(); ++i, ++k)
@@ -367,11 +371,12 @@ void AltarApp::buildShapeGeometryBuffers()
 		vertices[k].pos = cylinder.Vertices[i].Position;
 		vertices[k].normal = cylinder.Vertices[i].Normal;
 		vertices[k].tex = cylinder.Vertices[i].TexC;
+		vertices[k].tangentU = cylinder.Vertices[i].TangentU;
 	}
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex) * totalVertexCount;
+	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalVertexCount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
@@ -418,7 +423,7 @@ void AltarApp::buildSkullGeometryBuffers()
 	fin >> ignore >> tcount;
 	fin >> ignore >> ignore >> ignore >> ignore;
 
-	std::vector<Vertex> vertices(vcount);
+	std::vector<Vertex::Basic32> vertices(vcount);
 	for (UINT i = 0; i < vcount; ++i)
 	{
 		fin >> vertices[i].pos.x >> vertices[i].pos.y >> vertices[i].pos.z;
@@ -440,7 +445,7 @@ void AltarApp::buildSkullGeometryBuffers()
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex)* vcount;
+	vbd.ByteWidth = sizeof(Vertex::Basic32)* vcount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
