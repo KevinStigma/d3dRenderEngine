@@ -1,4 +1,5 @@
 #include "NormalDisplacementMapApp.h"
+#include <iostream>
 NormalDisplacementMapApp::NormalDisplacementMapApp() :m_renderOption(RENDER_BASIC)
 {
 
@@ -46,6 +47,16 @@ void NormalDisplacementMapApp::renderScene()
 	Effects::NormalMapFX->SetDirLights(&m_dirLight[0]);
 	Effects::NormalMapFX->SetEyePosW(eyePosW);
 
+	Effects::DisplacementMapFX->SetDirLights(&m_dirLight[0]);
+	Effects::DisplacementMapFX->SetEyePosW(eyePosW);
+
+	// These properties could be set per object if needed.
+	Effects::DisplacementMapFX->SetHeightScale(0.07f);
+	Effects::DisplacementMapFX->SetMaxTessDistance(1.0f);
+	Effects::DisplacementMapFX->SetMinTessDistance(25.0f);
+	Effects::DisplacementMapFX->SetMinTessFactor(1.0f);
+	Effects::DisplacementMapFX->SetMaxTessFactor(5.0f);
+
 	// Figure out which technique to use.  Skull does not have texture coordinates,
 	// so we need a separate technique for it.
 	ID3DX11EffectTechnique* activeTexTech = Effects::BasicFX->Light3TexTech;
@@ -62,7 +73,9 @@ void NormalDisplacementMapApp::renderScene()
 		activeTexTech = Effects::NormalMapFX->Light3TexTech;
 		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		break;
-	default:
+	case RENDER_DISPLACEMENTMAP:
+		activeTexTech = Effects::DisplacementMapFX->Light3TexTech;
+		m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 		break;
 	}
 
@@ -97,7 +110,15 @@ void NormalDisplacementMapApp::renderScene()
 			Effects::NormalMapFX->SetDiffuseMap(m_floorTexSRV);
 			Effects::NormalMapFX->SetNormalMap(m_stoneNormalTexSRV);
 			break;
-		default:
+		case RENDER_DISPLACEMENTMAP:
+			Effects::DisplacementMapFX->SetWorld(world);
+			Effects::DisplacementMapFX->SetWorldInvTranspose(worldInvTranspose);
+			Effects::DisplacementMapFX->SetViewProj(m_camera->getViewProjMatrix());
+			Effects::DisplacementMapFX->SetWorldViewProj(worldViewProj);
+			Effects::DisplacementMapFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
+			Effects::DisplacementMapFX->SetMaterial(m_materials[0].data);
+			Effects::DisplacementMapFX->SetDiffuseMap(m_floorTexSRV);
+			Effects::DisplacementMapFX->SetNormalMap(m_stoneNormalTexSRV);
 			break;
 		}
 		activeTexTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
@@ -127,7 +148,15 @@ void NormalDisplacementMapApp::renderScene()
 			Effects::NormalMapFX->SetDiffuseMap(m_brickTexSRV);
 			Effects::NormalMapFX->SetNormalMap(m_brickNormalTexSRV);
 			break;
-		default:
+		case RENDER_DISPLACEMENTMAP:
+			Effects::DisplacementMapFX->SetWorld(world);
+			Effects::DisplacementMapFX->SetWorldInvTranspose(worldInvTranspose);
+			Effects::DisplacementMapFX->SetViewProj(m_camera->getViewProjMatrix());
+			Effects::DisplacementMapFX->SetWorldViewProj(worldViewProj);
+			Effects::DisplacementMapFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
+			Effects::DisplacementMapFX->SetMaterial(m_materials[3].data);
+			Effects::DisplacementMapFX->SetDiffuseMap(m_brickTexSRV);
+			Effects::DisplacementMapFX->SetNormalMap(m_brickNormalTexSRV);
 			break;
 		}
 		activeTexTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
@@ -159,7 +188,15 @@ void NormalDisplacementMapApp::renderScene()
 				Effects::NormalMapFX->SetDiffuseMap(m_brickTexSRV);
 				Effects::NormalMapFX->SetNormalMap(m_brickNormalTexSRV);
 				break;
-			default:
+			case RENDER_DISPLACEMENTMAP:
+				Effects::DisplacementMapFX->SetWorld(world);
+				Effects::DisplacementMapFX->SetWorldInvTranspose(worldInvTranspose);
+				Effects::DisplacementMapFX->SetViewProj(m_camera->getViewProjMatrix());
+				Effects::DisplacementMapFX->SetWorldViewProj(worldViewProj);
+				Effects::DisplacementMapFX->SetTexTransform(XMMatrixScaling(1.0f, 2.0f, 1.0f));
+				Effects::DisplacementMapFX->SetMaterial(m_materials[1].data);
+				Effects::DisplacementMapFX->SetDiffuseMap(m_brickTexSRV);
+				Effects::DisplacementMapFX->SetNormalMap(m_brickNormalTexSRV);
 				break;
 			}
 			activeTexTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
@@ -167,6 +204,14 @@ void NormalDisplacementMapApp::renderScene()
 		}
 	}
 
+	// FX sets tessellation stages, but it does not disable them.  So do that here
+	// to turn off tessellation.
+
+	//I can't understand this code completely now
+	m_d3dDevContext->HSSetShader(0, 0, 0);
+	m_d3dDevContext->DSSetShader(0, 0, 0);
+
+	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// Draw the spheres.
 	activeSphereTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
@@ -234,6 +279,9 @@ void NormalDisplacementMapApp::keyPressEvent(QKeyEvent* event)
 		break;
 	case Qt::Key_2:
 		m_renderOption = RENDER_NORMALMAP;
+		break;
+	case Qt::Key_3:
+		m_renderOption = RENDER_DISPLACEMENTMAP;
 		break;
 	case Qt::Key_Up:
 		m_camera->walkForward(0.5f);
