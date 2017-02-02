@@ -19,6 +19,12 @@ namespace Vertex
 		}
 	};
 
+	struct Terrain
+	{
+		XMFLOAT3 pos;
+		XMFLOAT2 tex;
+		XMFLOAT2 boundsY;
+	};
 	struct PosNormalTexTan
 	{
 		XMFLOAT3 pos;
@@ -35,17 +41,15 @@ namespace Vertex
 	};
 }
 
-//struct Vertex
-//{
-//	Vertex(){}
-//	Vertex(float x, float y, float z,
-//		float nx, float ny, float nz,float tx,float ty)
-//		: pos(x, y, z), normal(nx, ny, nz),tex(tx,ty){}
-//
-//	XMFLOAT3 pos;
-//	XMFLOAT3 normal;
-//	XMFLOAT2 tex;
-//};
+class InputLayoutDesc
+{
+public:
+	static const D3D11_INPUT_ELEMENT_DESC Pos[1];
+	static const D3D11_INPUT_ELEMENT_DESC Basic32[3];
+	static const D3D11_INPUT_ELEMENT_DESC Terrain[3];
+	static const D3D11_INPUT_ELEMENT_DESC PosNormalTexTan[4];
+};
+
 
 class InputLayouts
 {
@@ -55,6 +59,7 @@ public:
 	static ID3D11InputLayout* Pos;
 	static ID3D11InputLayout* PosNorTex;
 	static ID3D11InputLayout* PosNormalTexTan;
+	static ID3D11InputLayout* Terrain;
 };
 
 #endif

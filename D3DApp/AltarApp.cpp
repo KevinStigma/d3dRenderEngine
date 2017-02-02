@@ -195,7 +195,7 @@ void AltarApp::renderScene()
 
 		XMMATRIX world = XMLoadFloat4x4(&m_skullWorld);
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
-		XMMATRIX worldViewProj = world*view*proj;
+		XMMATRIX worldViewProj = world*m_camera->getViewProjMatrix();
 
 		Effects::BasicFX->SetWorld(world);
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
