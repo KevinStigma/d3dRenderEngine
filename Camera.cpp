@@ -6,7 +6,7 @@ void Camera::init()
 	fov = 0.25f* XM_PI;
 	zNear = 0.01f;
 	zFar = 1000.0f;
-	position = XMFLOAT3(0.0f, 0.0f, -50.0f);
+	position = XMFLOAT3(0.0f, 2.0f, 100.0f);
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	look = XMFLOAT3(0.0f, 0.0f, 1.0f);
 	updateRight();
@@ -15,12 +15,6 @@ void Camera::init()
 	setLens(fov, aspectRatio, zNear, zFar);
 	
 	updateViewMatrix();
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			std::cout << mViewProj(i, j) << " ";
-		std::cout << std::endl;
-	}
 }
 
 XMMATRIX Camera::getViewMatrix()const 

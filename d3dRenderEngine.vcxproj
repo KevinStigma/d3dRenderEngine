@@ -161,6 +161,7 @@
     <ClCompile Include="D3DApp\HillWaveApp.cpp" />
     <ClCompile Include="D3DApp\MirrorApp.cpp" />
     <ClCompile Include="D3DApp\NormalDisplacementMapApp.cpp" />
+    <ClCompile Include="D3DApp\ParticleApp.cpp" />
     <ClCompile Include="D3DApp\TerrainApp.cpp" />
     <ClCompile Include="D3DApp\TessellationApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
@@ -194,6 +195,7 @@
     </ClCompile>
     <ClCompile Include="GlobalSys.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -250,6 +252,7 @@
     <ClInclude Include="D3DApp\HillWaveApp.h" />
     <ClInclude Include="D3DApp\MirrorApp.h" />
     <ClInclude Include="D3DApp\NormalDisplacementMapApp.h" />
+    <ClInclude Include="D3DApp\ParticleApp.h" />
     <ClInclude Include="D3DApp\TerrainApp.h" />
     <ClInclude Include="D3DApp\TessellationApp.h" />
     <ClInclude Include="Effects\Effects.h" />
@@ -257,6 +260,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
     <ClInclude Include="GlobalSys.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />
@@ -308,6 +312,11 @@
     </FxCompile>
     <FxCompile Include="FX\DisplacementMap.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="FX\Fire.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="FX\LightHelper.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -317,6 +326,7 @@
     </FxCompile>
     <FxCompile Include="FX\NormalMap.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="FX\Sky.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -324,6 +334,7 @@
     </FxCompile>
     <FxCompile Include="FX\Terrain.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="FX\Tessellation.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
