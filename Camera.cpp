@@ -6,7 +6,7 @@ void Camera::init()
 	fov = 0.25f* XM_PI;
 	zNear = 0.01f;
 	zFar = 1000.0f;
-	position = XMFLOAT3(0.0f, 2.0f, 100.0f);
+	position = XMFLOAT3(0.0f, 0.0f, -50.0f);
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	look = XMFLOAT3(0.0f, 0.0f, 1.0f);
 	updateRight();
@@ -40,6 +40,14 @@ void Camera::setLens(float fovY, float aspect, float zn, float zf)
 	zFar = zf;
 
 	XMStoreFloat4x4(&mProj,XMMatrixPerspectiveFovLH(fov, aspectRatio, zNear, zFar));
+}
+
+void Camera::setPosition(float posX, float posY, float posZ)
+{
+	position.x = posX;
+	position.y = posY;
+	position.z = posZ;
+	updateViewMatrix();
 }
 
 void Camera::lookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp)

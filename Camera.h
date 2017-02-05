@@ -14,6 +14,7 @@ public:
 	void walkRight(float d);
 	void walkUp(float d);
 	void lookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp);
+	void setPosition(float posX,float posY,float posZ);
 	void setLens(float fovY, float aspect, float zn, float zf);
 	void updateViewMatrix();
 	void updateRight();

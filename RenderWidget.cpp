@@ -15,6 +15,7 @@
 #include "D3DApp/CubeMapApp.h"
 #include "D3DApp/TerrainApp.h"
 #include "D3DApp/ParticleApp.h"
+#include "D3DApp/ShadowApp.h"
 #include "D3DApp/NormalDisplacementMapApp.h"
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
@@ -22,7 +23,7 @@ RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new ParticleApp;
+	m_d3dApp = new ShadowApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 }

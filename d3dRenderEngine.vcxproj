@@ -162,6 +162,7 @@
     <ClCompile Include="D3DApp\MirrorApp.cpp" />
     <ClCompile Include="D3DApp\NormalDisplacementMapApp.cpp" />
     <ClCompile Include="D3DApp\ParticleApp.cpp" />
+    <ClCompile Include="D3DApp\ShadowApp.cpp" />
     <ClCompile Include="D3DApp\TerrainApp.cpp" />
     <ClCompile Include="D3DApp\TessellationApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -253,6 +255,7 @@
     <ClInclude Include="D3DApp\MirrorApp.h" />
     <ClInclude Include="D3DApp\NormalDisplacementMapApp.h" />
     <ClInclude Include="D3DApp\ParticleApp.h" />
+    <ClInclude Include="D3DApp\ShadowApp.h" />
     <ClInclude Include="D3DApp\TerrainApp.h" />
     <ClInclude Include="D3DApp\TessellationApp.h" />
     <ClInclude Include="Effects\Effects.h" />
@@ -261,6 +264,7 @@
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
     <ClInclude Include="GlobalSys.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />

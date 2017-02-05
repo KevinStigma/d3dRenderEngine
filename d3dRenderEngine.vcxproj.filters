@@ -131,6 +131,12 @@
     <ClCompile Include="D3DApp\ParticleApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\ShadowApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -212,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="D3DApp\ParticleApp.h">
       <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\ShadowApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

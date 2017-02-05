@@ -7,6 +7,7 @@ ParticleApp::ParticleApp() :m_sky(NULL), m_flareTexSRV(NULL), m_randomTexSRV(NUL
 void ParticleApp::initScene(int width, int height)
 {
 	D3DApp::initScene(width, height);
+	m_camera->setPosition(0.0f, 2.0f, 100.0f);
 	Terrain::InitInfo tii;
 	tii.HeightMapFilename = L"./Data/Images/terrain.raw";
 	tii.LayerMapFilename0 = L"./Data/Images/grass.dds";
