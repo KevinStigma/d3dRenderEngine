@@ -163,6 +163,7 @@
     <ClCompile Include="D3DApp\NormalDisplacementMapApp.cpp" />
     <ClCompile Include="D3DApp\ParticleApp.cpp" />
     <ClCompile Include="D3DApp\ShadowApp.cpp" />
+    <ClCompile Include="D3DApp\SSAOApp.cpp" />
     <ClCompile Include="D3DApp\TerrainApp.cpp" />
     <ClCompile Include="D3DApp\TessellationApp.cpp" />
     <ClCompile Include="d3drenderengine.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="RenderWidget.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
@@ -256,6 +258,7 @@
     <ClInclude Include="D3DApp\NormalDisplacementMapApp.h" />
     <ClInclude Include="D3DApp\ParticleApp.h" />
     <ClInclude Include="D3DApp\ShadowApp.h" />
+    <ClInclude Include="D3DApp\SSAOApp.h" />
     <ClInclude Include="D3DApp\TerrainApp.h" />
     <ClInclude Include="D3DApp\TessellationApp.h" />
     <ClInclude Include="Effects\Effects.h" />
@@ -266,6 +269,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="Ssao.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />
     <CustomBuild Include="RenderWidget.h">

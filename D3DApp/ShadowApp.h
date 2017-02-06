@@ -14,13 +14,14 @@ class ShadowApp:public AltarApp
 {
 public:
 	ShadowApp();
-	void initScene(int width, int height);
-	void updateScene(GameTimer*gameTimer);
-	void renderScene();
-	void cleanUp();
+	virtual void initScene(int width, int height);
+	virtual void updateScene(GameTimer*gameTimer);
+	virtual void renderScene();
+	virtual void cleanUp();
 protected:
 	void buildShadowTransform();
 	void drawSceneToShadowMap();
+	void buildScreenQuadGeometryBuffers();
 	float m_lightRotationAngle;
 	BoundingSphere m_sceneBounds;
 	XMFLOAT3 m_originalLightDir[3];
@@ -30,5 +31,8 @@ protected:
 	Sky* m_sky;
 	ShadowMap* m_smap;
 	int m_shadowMapSize;
+	ID3D11Buffer* m_screenQuadVB;
+	ID3D11Buffer* m_screenQuadIB;
+
 };
 #endif

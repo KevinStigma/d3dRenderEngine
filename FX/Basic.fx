@@ -21,6 +21,7 @@ cbuffer cbPerObject
 	float4x4 gWorld;
 	float4x4 gWorldInvTranspose;
 	float4x4 gWorldViewProj;
+	float4x4 gWorldViewProjTex;
 	float4x4 gTexTransform;
 	float4x4 gShadowTransform; 
 	Material gMaterial;
@@ -29,7 +30,7 @@ cbuffer cbPerObject
 // Nonnumeric values cannot be added to a cbuffer.
 Texture2D gDiffuseMap;
 Texture2D gShadowMap;
-
+Texture2D gSsaoMap;
 TextureCube gCubeMap;
 
 SamplerState samLinear
@@ -64,6 +65,7 @@ struct VertexOut
     float3 NormalW    : NORMAL;
 	float2 Tex        : TEXCOORD0;
 	float4 ShadowPosH : TEXCOORD1;
+	float4 SsaoPosH   : TEXCOORD2;
 };
 
 VertexOut VS(VertexIn vin)
@@ -82,6 +84,9 @@ VertexOut VS(VertexIn vin)
 
 	// Generate projective tex-coords to project shadow map onto scene.
 	vout.ShadowPosH = mul(float4(vin.PosL, 1.0f), gShadowTransform);
+
+	// Generate projective tex-coords to project SSAO map onto scene.
+	vout.SsaoPosH = mul(float4(vin.PosL, 1.0f), gWorldViewProjTex);
 
 	return vout;
 }
@@ -137,6 +142,10 @@ float4 PS(VertexOut pin,
 		float3 shadow = float3(1.0f, 1.0f, 1.0f);
 		shadow[0] = CalcShadowFactor(samShadow, gShadowMap, pin.ShadowPosH);
 
+		// Finish texture projection and sample SSAO map.
+		pin.SsaoPosH /= pin.SsaoPosH.w;
+		float ambientAccess = gSsaoMap.SampleLevel(samLinear, pin.SsaoPosH.xy, 0.0f).r;
+
 		// Sum the light contribution from each light source.  
 		[unroll]
 		for(int i = 0; i < gLightCount; ++i)
@@ -145,7 +154,7 @@ float4 PS(VertexOut pin,
 			ComputeDirectionalLight(gMaterial, gDirLights[i], pin.NormalW, toEye, 
 				A, D, S);
 
-			ambient += A;    
+			ambient += ambientAccess*A;    
 			diffuse += shadow[i]*D;
 			spec    += shadow[i]*S;
 		}

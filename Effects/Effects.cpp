@@ -71,6 +71,7 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	FogStart = mFX->GetVariableByName("gFogStart")->AsScalar();
 	FogRange = mFX->GetVariableByName("gFogRange")->AsScalar();
 	ShadowMap = mFX->GetVariableByName("gShadowMap")->AsShaderResource();
+	SsaoMap = mFX->GetVariableByName("gSsaoMap")->AsShaderResource();
 }
 
 BasicEffect::~BasicEffect()
@@ -373,6 +374,88 @@ BuildShadowMapEffect::~BuildShadowMapEffect()
 }
 #pragma endregion
 
+#pragma region SsaoNormalDepthEffect
+SsaoNormalDepthEffect::SsaoNormalDepthEffect(ID3D11Device* device, const std::wstring& filename)
+: Effect(device, filename)
+{
+	NormalDepthTech = mFX->GetTechniqueByName("NormalDepth");
+	NormalDepthAlphaClipTech = mFX->GetTechniqueByName("NormalDepthAlphaClip");
+
+	WorldView = mFX->GetVariableByName("gWorldView")->AsMatrix();
+	WorldInvTransposeView = mFX->GetVariableByName("gWorldInvTransposeView")->AsMatrix();
+	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+	TexTransform = mFX->GetVariableByName("gTexTransform")->AsMatrix();
+	DiffuseMap = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
+}
+
+SsaoNormalDepthEffect::~SsaoNormalDepthEffect()
+{
+}
+#pragma endregion
+
+#pragma region SsaoEffect
+SsaoEffect::SsaoEffect(ID3D11Device* device, const std::wstring& filename)
+: Effect(device, filename)
+{
+	SsaoTech = mFX->GetTechniqueByName("Ssao");
+
+	ViewToTexSpace = mFX->GetVariableByName("gViewToTexSpace")->AsMatrix();
+	OffsetVectors = mFX->GetVariableByName("gOffsetVectors")->AsVector();
+	FrustumCorners = mFX->GetVariableByName("gFrustumCorners")->AsVector();
+	OcclusionRadius = mFX->GetVariableByName("gOcclusionRadius")->AsScalar();
+	OcclusionFadeStart = mFX->GetVariableByName("gOcclusionFadeStart")->AsScalar();
+	OcclusionFadeEnd = mFX->GetVariableByName("gOcclusionFadeEnd")->AsScalar();
+	SurfaceEpsilon = mFX->GetVariableByName("gSurfaceEpsilon")->AsScalar();
+
+	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
+	RandomVecMap = mFX->GetVariableByName("gRandomVecMap")->AsShaderResource();
+}
+
+SsaoEffect::~SsaoEffect()
+{
+}
+#pragma endregion
+
+#pragma region SsaoBlurEffect
+SsaoBlurEffect::SsaoBlurEffect(ID3D11Device* device, const std::wstring& filename)
+: Effect(device, filename)
+{
+	HorzBlurTech = mFX->GetTechniqueByName("HorzBlur");
+	VertBlurTech = mFX->GetTechniqueByName("VertBlur");
+
+	TexelWidth = mFX->GetVariableByName("gTexelWidth")->AsScalar();
+	TexelHeight = mFX->GetVariableByName("gTexelHeight")->AsScalar();
+
+	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
+	InputImage = mFX->GetVariableByName("gInputImage")->AsShaderResource();
+}
+
+SsaoBlurEffect::~SsaoBlurEffect()
+{
+}
+#pragma endregion
+
+#pragma region DebugTexEffect
+DebugTexEffect::DebugTexEffect(ID3D11Device* device, const std::wstring& filename)
+: Effect(device, filename)
+{
+	ViewArgbTech = mFX->GetTechniqueByName("ViewArgbTech");
+	ViewRedTech = mFX->GetTechniqueByName("ViewRedTech");
+	ViewGreenTech = mFX->GetTechniqueByName("ViewGreenTech");
+	ViewBlueTech = mFX->GetTechniqueByName("ViewBlueTech");
+	ViewAlphaTech = mFX->GetTechniqueByName("ViewAlphaTech");
+
+	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+	Texture = mFX->GetVariableByName("gTexture")->AsShaderResource();
+}
+
+DebugTexEffect::~DebugTexEffect()
+{
+
+}
+
+#pragma endregion
+
 #pragma region Effects
 
 BasicEffect* Effects::BasicFX = 0;
@@ -383,6 +466,10 @@ DisplacementMapEffect* Effects::DisplacementMapFX = 0;
 TerrainEffect* Effects::TerrainFX = 0;
 ParticleEffect* Effects::FireFX= 0;
 BuildShadowMapEffect* Effects::BuildShadowMapFX = 0;
+SsaoBlurEffect* Effects::SsaoBlurFX = 0;
+SsaoEffect* Effects::SsaoFX = 0;
+SsaoNormalDepthEffect* Effects::SsaoNormalDepthFX = 0;
+DebugTexEffect*        Effects::DebugTexFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
@@ -394,6 +481,11 @@ void Effects::InitAll(ID3D11Device* device)
 	TerrainFX = new TerrainEffect(device, L"FX/Terrain.fx");
 	FireFX = new ParticleEffect(device, L"FX/Fire.fx");
 	BuildShadowMapFX = new BuildShadowMapEffect(device, L"FX/BuildShadowMap.fx");
+	SsaoFX = new SsaoEffect(device, L"FX/Ssao.fx");
+	SsaoBlurFX = new SsaoBlurEffect(device, L"FX/SsaoBlur.fx");
+	SsaoNormalDepthFX = new SsaoNormalDepthEffect(device, L"FX/SsaoNormalDepth.fx");
+	SkyFX = new SkyEffect(device, L"FX/Sky.fx");
+	DebugTexFX = new DebugTexEffect(device, L"FX/DebugTexture.fx");
 }
 
 void Effects::DestroyAll()
@@ -405,5 +497,9 @@ void Effects::DestroyAll()
 	SafeDelete(DisplacementMapFX);
 	SafeDelete(FireFX);
 	SafeDelete(BuildShadowMapFX);
+	SafeDelete(SsaoBlurFX);
+	SafeDelete(SsaoFX);
+	SafeDelete(SsaoNormalDepthFX);
+	SafeDelete(DebugTexFX);
 }
 #pragma endregion

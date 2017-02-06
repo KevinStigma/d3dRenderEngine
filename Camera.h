@@ -32,7 +32,6 @@ public:
 	float zNear;
 	float zFar;
 	float aspectRatio;
-	
 };
 
 #endif
