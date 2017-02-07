@@ -17,6 +17,7 @@ public:
 	void setPosition(float posX,float posY,float posZ);
 	void setLens(float fovY, float aspect, float zn, float zf);
 	void updateViewMatrix();
+	void updateViewMatrix(XMFLOAT3 pos,XMFLOAT3 t,XMFLOAT3 u);
 	void updateRight();
 	void rotateY(float angle);
 	void rotateRight(float angle);

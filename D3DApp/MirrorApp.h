@@ -30,7 +30,6 @@ protected:
 	ID3D11ShaderResourceView* m_mirrorDiffuseMapSRV;
 	ID3D11BlendState* m_noRenderTargetWritesBS;
 	ID3D11DepthStencilState* m_markMirrorDSS;
-	ID3D11RasterizerState* m_cullClockwiseRS;
 	ID3D11DepthStencilState* m_drawReflectionDSS;
 	ID3D11DepthStencilState* m_noDoubleBlendDSS;
 };

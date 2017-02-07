@@ -62,6 +62,18 @@ void Camera::lookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp)
 	XMStoreFloat3(&up, U);
 }
 
+void Camera::updateViewMatrix(XMFLOAT3 pos, XMFLOAT3 t, XMFLOAT3 u)
+{
+	position = pos;
+	XMVECTOR look_vec = XMVector3Normalize(XMLoadFloat3(&t) - XMLoadFloat3(&pos));
+	XMVECTOR right_vec = XMVector3Normalize(XMVector3Cross(XMLoadFloat3(&u), look_vec));
+	XMVECTOR up_vec = XMVector3Cross(look_vec, right_vec);
+	XMStoreFloat3(&look, look_vec);
+	XMStoreFloat3(&right, right_vec);
+	XMStoreFloat3(&up, up_vec);
+	updateViewMatrix();
+}
+
 void Camera::updateViewMatrix()
 {
 	XMMATRIX camView = XMMatrixIdentity();

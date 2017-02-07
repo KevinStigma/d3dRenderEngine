@@ -1,9 +1,10 @@
 #include "MirrorApp.h"
 #include "../GameTimer.h"
+#include "../RenderStates/Renderstates.h"
 
 MirrorApp::MirrorApp() :m_floorDiffuseMapSRV(false), m_wallDiffuseMapSRV(false), m_mirrorDiffuseMapSRV(false),
 m_roomVB(false), m_skullIB(false), m_skullVB(false), m_noRenderTargetWritesBS(false),m_skullTranslation(0,0,-2),
-m_cullClockwiseRS(false), m_drawReflectionDSS(false), m_noDoubleBlendDSS(false)
+m_drawReflectionDSS(false), m_noDoubleBlendDSS(false)
 {
 }
 
@@ -47,15 +48,6 @@ bool MirrorApp::initD3D(HWND windowId, int width, int height)
 	mirrorDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	HR(m_d3dDevice->CreateDepthStencilState(&mirrorDesc, &m_markMirrorDSS));
-
-	D3D11_RASTERIZER_DESC cullClockwiseDesc;
-	ZeroMemory(&cullClockwiseDesc, sizeof(D3D11_RASTERIZER_DESC));
-	cullClockwiseDesc.FillMode = D3D11_FILL_SOLID;
-	cullClockwiseDesc.CullMode = D3D11_CULL_BACK;
-	cullClockwiseDesc.FrontCounterClockwise = true;
-	cullClockwiseDesc.DepthClipEnable = true;
-
-	HR(m_d3dDevice->CreateRasterizerState(&cullClockwiseDesc, &m_cullClockwiseRS)); 
 
 	D3D11_DEPTH_STENCIL_DESC drawReflectionDesc;
 	drawReflectionDesc.DepthEnable = true;
@@ -118,7 +110,6 @@ void MirrorApp::cleanUp()
 	ReleaseCOM(m_noRenderTargetWritesBS);
 
 	ReleaseCOM(m_markMirrorDSS);
-	ReleaseCOM(m_cullClockwiseRS);
 	ReleaseCOM(m_drawReflectionDSS);
 	ReleaseCOM(m_noDoubleBlendDSS);
 }
@@ -475,7 +466,7 @@ void MirrorApp::renderScene()
 		Effects::BasicFX->SetDirLights(&m_dirLight[0]);
 
 		// Cull clockwise triangles for reflection.
-		m_d3dDevContext->RSSetState(m_cullClockwiseRS);
+		m_d3dDevContext->RSSetState(RenderStates::CullClockwiseRS);
 
 		// Only draw reflection into visible mirror pixels as marked by the stencil buffer. 
 		m_d3dDevContext->OMSetDepthStencilState(m_drawReflectionDSS, 1);
@@ -518,7 +509,7 @@ void MirrorApp::renderScene()
 		Effects::BasicFX->SetDiffuseMap(m_mirrorDiffuseMapSRV);
 
 		// Mirror
-		m_d3dDevContext->OMSetBlendState(m_blendState, blendFactor, 0xffffffff);
+		m_d3dDevContext->OMSetBlendState(RenderStates::TransparentBS, blendFactor, 0xffffffff);
 		pass->Apply(0, m_d3dDevContext);
 		m_d3dDevContext->Draw(6, 24);
 		m_d3dDevContext->OMSetBlendState(0, blendFactor, 0xffffffff);
@@ -551,7 +542,7 @@ void MirrorApp::renderScene()
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetMaterial(m_materials[5].data);
 
-		m_d3dDevContext->OMSetBlendState(m_blendState, blendFactor, 0xffffffff);
+		m_d3dDevContext->OMSetBlendState(RenderStates::TransparentBS, blendFactor, 0xffffffff);
 		m_d3dDevContext->OMSetDepthStencilState(m_noDoubleBlendDSS, 0);
 		pass->Apply(0, m_d3dDevContext);
 		m_d3dDevContext->DrawIndexed(m_skullIndexCount, 0, 0);

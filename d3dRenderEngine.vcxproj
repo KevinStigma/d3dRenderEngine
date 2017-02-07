@@ -198,6 +198,7 @@
     <ClCompile Include="GlobalSys.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="RenderStates\RenderStates.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
     <ClInclude Include="GlobalSys.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="RenderStates\RenderStates.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Ssao.h" />

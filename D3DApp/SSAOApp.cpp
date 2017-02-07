@@ -1,5 +1,7 @@
 #include "SSAOApp.h"
-SSAOApp::SSAOApp() :m_ssao(NULL), m_equalsDSS(NULL)
+#include "../RenderStates/RenderStates.h"
+
+SSAOApp::SSAOApp() :m_ssao(NULL)
 {
 }
 
@@ -9,14 +11,6 @@ void SSAOApp::initScene(int width, int height)
 	m_ssao = new Ssao(m_d3dDevice, m_d3dDevContext, m_screenViewport.Width, m_screenViewport.Height, m_camera->fov, m_camera->zFar);
 	
 	buildScreenQuadGeometryBuffers();
-
-	D3D11_DEPTH_STENCIL_DESC equalsDesc;
-	ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-	equalsDesc.DepthEnable = true;
-	equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	equalsDesc.DepthFunc = D3D11_COMPARISON_EQUAL;
-
-	HR(m_d3dDevice->CreateDepthStencilState(&equalsDesc, &m_equalsDSS));
 }
 void SSAOApp::updateScene(GameTimer*gameTimer)
 {
@@ -171,7 +165,7 @@ void SSAOApp::renderScene()
 
 	// We already laid down scene depth to the depth buffer in the Normal/Depth map pass,
 	// so we can set the depth comparison test to EQUAL
-	m_d3dDevContext->OMSetDepthStencilState(m_equalsDSS, 0);
+	m_d3dDevContext->OMSetDepthStencilState(RenderStates::EqualDSS, 0);
 
 	XMMATRIX view = m_camera->getViewMatrix();
 	XMMATRIX proj = m_camera->getProjMatrix();
@@ -380,7 +374,6 @@ void SSAOApp::cleanUp()
 {
 	ShadowApp::cleanUp();
 	SafeDelete(m_ssao);
-	ReleaseCOM(m_equalsDSS);
 	ReleaseCOM(m_screenQuadIB);
 	ReleaseCOM(m_screenQuadVB);
 }

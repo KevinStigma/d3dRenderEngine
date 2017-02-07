@@ -14,7 +14,6 @@ protected:
 	void drawSceneToSsaoNormalDepthMap();
 	void drawScreenQuad(ID3D11ShaderResourceView* srv);
 	Ssao* m_ssao;
-	ID3D11DepthStencilState* m_equalsDSS;
 };
 
 #endif

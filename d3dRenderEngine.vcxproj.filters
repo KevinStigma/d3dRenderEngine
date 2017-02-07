@@ -45,8 +45,8 @@
     <Filter Include="D3DApp">
       <UniqueIdentifier>{762c14b0-37f2-47f5-9acb-4bdaa4826f65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{fe725eaf-4e6d-445c-a795-d5712a671f8a}</UniqueIdentifier>
+    <Filter Include="RenderStates">
+      <UniqueIdentifier>{d7ed3901-6c80-4ce8-96e7-4a14794e9c41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +143,9 @@
     <ClCompile Include="D3DApp\SSAOApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
+    <ClCompile Include="RenderStates\RenderStates.cpp">
+      <Filter>RenderStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -236,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="Ssao.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStates\RenderStates.h">
+      <Filter>RenderStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

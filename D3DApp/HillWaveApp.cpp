@@ -1,5 +1,6 @@
 #include "HillWaveApp.h"
 #include "../GameTimer.h"
+#include "../RenderStates/RenderStates.h"
 #include <GeometryGenerator.h>
 #include <iostream>
 
@@ -144,7 +145,7 @@ void HillWaveApp::renderScene()
 		Effects::BasicFX->SetMaterial(m_materials[2].data);
 		Effects::BasicFX->SetDiffuseMap(m_wavesMapSRV);
 
-		m_d3dDevContext->OMSetBlendState(m_blendState, blendFactor, 0xffffffff);
+		m_d3dDevContext->OMSetBlendState(RenderStates::TransparentBS, blendFactor, 0xffffffff);
 		activeTech->GetPassByIndex(p)->Apply(0, m_d3dDevContext);
 		m_d3dDevContext->DrawIndexed(3 * m_waves.TriangleCount(), 0, 0);
 		m_d3dDevContext->OMSetBlendState(0, blendFactor, 0xffffffff);

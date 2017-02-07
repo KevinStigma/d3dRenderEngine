@@ -6,7 +6,6 @@
 #include <d3dx11effect.h>
 #include <vector>
 #include "Camera.h"
-#include "Effects/Effects.h"
 #include "Vertex.h"
 
 class GameTimer;
@@ -41,7 +40,6 @@ protected:
 	void setRasterizationState();
 	void buildVertexLayout();
 	void saveAlphaImage(int width, int height, int alpha);
-	ID3D11BlendState* initBlending();
 	virtual void loadTextures();
 
 	D3D11_VIEWPORT m_screenViewport;
@@ -52,7 +50,6 @@ protected:
 	ID3D11DepthStencilView *m_depthStencilView;
 	ID3D11RenderTargetView *m_renderTargetView;
 	ID3D11RasterizerState *m_rasterizeState;
-	ID3D11BlendState* m_blendState;
 
 	ID3D11Buffer *m_squareVertexBuffer;
 	ID3D11Buffer *m_squareIndiceBuffer;

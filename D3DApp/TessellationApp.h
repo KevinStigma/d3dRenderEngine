@@ -17,7 +17,6 @@ protected:
 	void buildQuadPatchBuffer();
 
 	ID3D11Buffer* m_quadPatchVB;
-	ID3D11RasterizerState* m_wireFrameRS;
 	float m_theta;
 	float m_phi;
 	float m_radius;

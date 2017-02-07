@@ -1,8 +1,9 @@
 #include "TessellationApp.h"
+#include "../RenderStates/RenderStates.h"
 #include <MathHelper.cpp>
 #include <qwidget.h>
 
-TessellationApp::TessellationApp() :m_quadPatchVB(NULL), m_wireFrameRS(NULL), m_lastPoint(0,0)
+TessellationApp::TessellationApp() :m_quadPatchVB(NULL),m_lastPoint(0,0)
 {
 	m_theta = 1.3f*MathHelper::Pi;
 	m_phi = 0.2f*MathHelper::Pi;
@@ -13,7 +14,6 @@ bool TessellationApp::initD3D(HWND windowId, int width, int height)
 {
 	if (!D3DApp::initD3D(windowId, width, height))
 		return false;
-
 	return true;
 }
 
@@ -23,20 +23,14 @@ void TessellationApp::updateScene(GameTimer*gameTimer)
 	float z = m_radius*sinf(m_phi)*sinf(m_theta);
 	float y = m_radius*cosf(m_phi);
 
-	//m_camera->calViewMatrix(XMFLOAT3(x, y, z), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
+	m_camera->updateViewMatrix(XMFLOAT3(x, y, z), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
 }
 
 void TessellationApp::initScene(int width, int height)
 {
 	D3DApp::initScene(width, height);
 
-	D3D11_RASTERIZER_DESC wfdesc;
-	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
-	wfdesc.CullMode = D3D11_CULL_BACK;
-	HRESULT	hr = m_d3dDevice->CreateRasterizerState(&wfdesc, &m_wireFrameRS);
-
-	m_d3dDevContext->RSSetState(m_wireFrameRS);
+	m_d3dDevContext->RSSetState(RenderStates::WireframeRS);
 	buildQuadPatchBuffer();
 }
 
@@ -68,7 +62,7 @@ void TessellationApp::renderScene()
 
 	m_d3dDevContext->IASetInputLayout(InputLayouts::Pos);
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
-	m_d3dDevContext->RSSetState(m_wireFrameRS);
+	m_d3dDevContext->RSSetState(RenderStates::WireframeRS);
 
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 

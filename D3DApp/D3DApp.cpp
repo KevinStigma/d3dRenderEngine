@@ -3,13 +3,13 @@
 #include "D3DApp.h"
 #include "GlobalSys.h"
 #include "../GameTimer.h"
+#include "Effects/Effects.h"
+#include "RenderStates/RenderStates.h"
 #include <iostream>
-//#include <stdlib.h>
-
 
 D3DApp::D3DApp() :m_d3dDevice(0), m_d3dDevContext(0), m_swapChain(0),m_depthStencilBuffer(0),m_depthStencilView(0),
 m_renderTargetView(0), m_rasterizeState(0), m_squareVertexBuffer(0),m_squareIndiceBuffer(0),m_translateX(0), m_translateY(0),
-m_hasTex(false), m_blendState(false)
+m_hasTex(false)
 {
 	m_camera = new Camera;
 	XMStoreFloat4x4(&m_transformMat, XMMatrixIdentity());
@@ -93,8 +93,7 @@ bool D3DApp::initD3D(HWND windowId, int width, int height)
 	//Set our Render Target
 	m_d3dDevContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-	//set blending
-	m_blendState = initBlending();
+	RenderStates::initAll(m_d3dDevice);
 	return true;
 }
 
@@ -242,26 +241,6 @@ void D3DApp::saveAlphaImage(int width, int height, int alpha)
 void D3DApp::buildVertexLayout()
 {
 	InputLayouts::initAll(m_d3dDevice);
-}
-
-ID3D11BlendState* D3DApp::initBlending()
-{
-	D3D11_BLEND_DESC transparentDesc = { 0 };
-	transparentDesc.AlphaToCoverageEnable = false;
-	transparentDesc.IndependentBlendEnable = false;
-	
-	transparentDesc.RenderTarget[0].BlendEnable = true;
-	transparentDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	transparentDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	transparentDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	transparentDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	transparentDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	transparentDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	transparentDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	ID3D11BlendState* transparentBS;
-	HR(m_d3dDevice->CreateBlendState(&transparentDesc, &transparentBS));
-	return transparentBS;
 }
 
 void D3DApp::loadTextures()
@@ -426,11 +405,11 @@ void D3DApp::cleanUp()
 	ReleaseCOM(m_depthStencilView);
 	ReleaseCOM(m_renderTargetView);
 	ReleaseCOM(m_rasterizeState);
-	ReleaseCOM(m_blendState);
 	ReleaseCOM(m_squareVertexBuffer);
 	ReleaseCOM(m_squareIndiceBuffer);
 
 	Effects::DestroyAll();
 	InputLayouts::destroyAll();
+	RenderStates::destroyAll();
 	SafeDelete(m_camera);
 }
