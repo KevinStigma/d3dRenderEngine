@@ -53,6 +53,9 @@ public:
 	ID3DX11EffectTechnique* Light1RefTech;
 	ID3DX11EffectTechnique* Light2RefTech;
 	ID3DX11EffectTechnique* Light3RefTech;
+	ID3DX11EffectTechnique* Light3TexShadowTech;
+	ID3DX11EffectTechnique* Light3TexShadowSsaoTech;
+	ID3DX11EffectTechnique* Light3RefSsaoTech;
 	ID3DX11EffectTechnique*	ColorTech;
 	ID3DX11EffectTechnique* Light1TexAlphaClipFogTech;
 

@@ -289,8 +289,8 @@ void ShadowApp::renderScene()
 
 	// Figure out which technique to use for different geometry.
 
-	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3TexTech;
+	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light3TexShadowTech;
+	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3TexShadowTech;
 	ID3DX11EffectTechnique* activeSkullTech = Effects::BasicFX->Light3RefTech;
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

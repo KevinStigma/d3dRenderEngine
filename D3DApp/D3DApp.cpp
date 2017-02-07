@@ -365,19 +365,11 @@ void D3DApp::resizeD3D(int width,int height)
 	//Set our Render Target
 	m_d3dDevContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-	//Create the Viewport
-	D3D11_VIEWPORT viewport;
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
-
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = width;
-	viewport.Height = height;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	m_screenViewport.Width = width;
+	m_screenViewport.Height = height;
 
 	//Set the Viewport
-	m_d3dDevContext->RSSetViewports(1, &viewport);
+	m_d3dDevContext->RSSetViewports(1, &m_screenViewport);
 }
 
 void D3DApp::setTransMat(float*data)

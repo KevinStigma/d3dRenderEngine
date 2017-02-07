@@ -10,6 +10,7 @@ public:
 	virtual void updateScene(GameTimer*gameTimer);
 	virtual void renderScene();
 	virtual void cleanUp();
+	virtual void resizeD3D(int width, int height);
 protected:
 	void drawSceneToSsaoNormalDepthMap();
 	void drawScreenQuad(ID3D11ShaderResourceView* srv);

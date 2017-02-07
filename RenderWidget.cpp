@@ -19,12 +19,12 @@
 #include "D3DApp/SSAOApp.h"
 #include "D3DApp/NormalDisplacementMapApp.h"
 
-RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true)
+RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true), m_arcball(NULL)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new TessellationApp;
+	m_d3dApp = new CrateApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 }
@@ -61,9 +61,10 @@ void RenderWidget::resizeEvent(QResizeEvent *event)
 	{
 		m_d3dApp->initD3D((HWND)winId(), width(), height());
 		m_d3dApp->initScene(width(), height());
-		m_arcball = new MyArcball(width(), height());
 		m_firstStart = false;
 	}
+	SafeDelete(m_arcball);
+	m_arcball = new MyArcball(width(), height());
 	m_d3dApp->resizeD3D(width(), height());
 }
 void RenderWidget::paintEvent(QPaintEvent *event)

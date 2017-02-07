@@ -182,8 +182,8 @@ void SSAOApp::renderScene()
 
 	// Figure out which technique to use for different geometry.
 
-	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3TexTech;
+	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light3TexShadowSsaoTech;
+	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3TexShadowSsaoTech;
 	ID3DX11EffectTechnique* activeSkullTech = Effects::BasicFX->Light3RefTech;
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -369,6 +369,12 @@ void SSAOApp::drawScreenQuad(ID3D11ShaderResourceView* srv)
 	}
 }
 
+void SSAOApp::resizeD3D(int width, int height)
+{
+	ShadowApp::resizeD3D(width, height);
+	SafeDelete(m_ssao);
+	m_ssao = new Ssao(m_d3dDevice, m_d3dDevContext, m_screenViewport.Width, m_screenViewport.Height, m_camera->fov, m_camera->zFar);
+}
 
 void SSAOApp::cleanUp()
 {

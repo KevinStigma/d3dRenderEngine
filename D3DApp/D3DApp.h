@@ -28,7 +28,7 @@ public:
 	virtual void cleanUp();
 	virtual void updateScene(GameTimer*gameTimer);
 	virtual void keyPressEvent(QKeyEvent *event);
-	void resizeD3D(int width, int height);
+	virtual void resizeD3D(int width, int height);
 	void setTransMat(float*data);
 	void setTranslate(float x,float y);
 	void loadObjData();

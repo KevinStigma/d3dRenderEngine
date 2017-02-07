@@ -49,6 +49,9 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	Light1TexTech	  = mFX->GetTechniqueByName("Light1Tex");
 	Light2TexTech     = mFX->GetTechniqueByName("Light2Tex");
 	Light3TexTech     = mFX->GetTechniqueByName("Light3Tex");
+	Light3TexShadowTech = mFX->GetTechniqueByName("Light3TexShadow");
+	Light3TexShadowSsaoTech = mFX->GetTechniqueByName("Light3TexShadowSsao");
+	Light3RefSsaoTech = mFX->GetTechniqueByName("Light3RefSsao");
 
 	Light1RefTech	  = mFX->GetTechniqueByName("Light1Reflect");
 	Light2RefTech     = mFX->GetTechniqueByName("Light2Reflect");
