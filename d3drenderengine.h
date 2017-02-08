@@ -14,9 +14,21 @@ public:
 	void keyPressEvent(QKeyEvent *event);
 
 public slots:
-	void on_actionLoad_Obj_triggered();
-
+	void on_actionHillWaves_triggered();
+	void on_actionMirror_triggered();
+	void on_actionTessellation_triggered();
+	void on_actionAltar_triggered();
+	void on_actionCubeMap_triggered();
+	void on_actionNor_DispMap_triggered();
+	void on_actionTerrain_triggered();
+	void on_actionParticle_triggered();
+	void on_actionShadow_triggered();
+	void on_actionSSAO_triggered();
+	void on_actionAnimation_triggered();
 private:
+	void updateActionsChecked(QAction* cur_action);
+	void loadObj();
+	std::vector<QAction*> sceneActions;
 	Ui::d3dRenderEngineClass ui;
 };
 

@@ -35,9 +35,19 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Scenes</string>
     </property>
-    <addaction name="actionLoad_Obj"/>
+    <addaction name="actionHillWaves"/>
+    <addaction name="actionMirror"/>
+    <addaction name="actionTessellation"/>
+    <addaction name="actionAltar"/>
+    <addaction name="actionCubeMap"/>
+    <addaction name="actionNor_DispMap"/>
+    <addaction name="actionTerrain"/>
+    <addaction name="actionParticle"/>
+    <addaction name="actionShadow"/>
+    <addaction name="actionSSAO"/>
+    <addaction name="actionAnimation"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -50,9 +60,95 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionLoad_Obj">
+  <action name="actionHillWaves">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Load Obj</string>
+    <string>HillWaves</string>
+   </property>
+  </action>
+  <action name="actionMirror">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mirror</string>
+   </property>
+  </action>
+  <action name="actionAltar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Altar</string>
+   </property>
+  </action>
+  <action name="actionNor_DispMap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>NorDispMap</string>
+   </property>
+  </action>
+  <action name="actionTerrain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Terrain</string>
+   </property>
+  </action>
+  <action name="actionParticle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Particle</string>
+   </property>
+  </action>
+  <action name="actionTessellation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tessellation</string>
+   </property>
+  </action>
+  <action name="actionShadow">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Shadow</string>
+   </property>
+  </action>
+  <action name="actionSSAO">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SSAO</string>
+   </property>
+  </action>
+  <action name="actionAnimation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Animation</string>
+   </property>
+  </action>
+  <action name="actionCubeMap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>CubeMap</string>
    </property>
   </action>
  </widget>

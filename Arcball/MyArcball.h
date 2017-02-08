@@ -4,11 +4,20 @@
 class MyArcball
 {
 public:
-	MyArcball(float w,float h):ArcBall(w,h)
+	MyArcball(float w, float h) :ArcBall(NULL)
 	{
+		ArcBall=new ArcBallT(w,h);
 		init();
 	}
-	ArcBallT    ArcBall;
+	~MyArcball()
+	{
+		if (ArcBall)
+		{
+			delete ArcBall;
+			ArcBall = NULL;
+		}
+	}
+	ArcBallT*    ArcBall;
 	Matrix4fT   Transform;
 	Matrix3fT   LastRot;
 	Matrix3fT   ThisRot;
@@ -25,6 +34,15 @@ public:
 		Transform.M[4]=0.0f;Transform.M[5]=1.0f;Transform.M[6]=0.0f;Transform.M[7]=0.0f;
 		Transform.M[8]=0.0f;Transform.M[9]=0.0f;Transform.M[10]=1.0f;Transform.M[11]=0.0f;
 		Transform.M[12]=0.0f;Transform.M[13]=0.0f;Transform.M[14]=0.0f;Transform.M[15]=1.0f;
+	}
+	void updateScreenSize(int width,int height)
+	{
+		if (ArcBall)
+		{
+			delete ArcBall;
+			ArcBall = NULL;
+		}
+		ArcBall = new ArcBallT(width, height);
 	}
 };
 #endif

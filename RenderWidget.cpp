@@ -7,7 +7,6 @@
 #include <iostream>
 #include "foundation.h"
 #include "D3DApp/D3DApp.h"
-#include "D3DApp/CrateApp.h"
 #include "D3DApp/HillWaveApp.h"
 #include "D3DApp/MirrorApp.h"
 #include "D3DApp/TessellationApp.h"
@@ -20,12 +19,12 @@
 #include "D3DApp/AnimationApp.h"
 #include "D3DApp/NormalDisplacementMapApp.h"
 
-RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true), m_arcball(NULL)
+RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true), m_arcball(NULL), m_curScene(HILLWAVE)
 {
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new CubeMapApp;
+	m_d3dApp = new HillWaveApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 }
@@ -37,25 +36,6 @@ RenderWidget::~RenderWidget()
 	SafeDelete(m_d3dApp);
 }
 
-
-void RenderWidget::testArcball()
-{
-	m_arcball->MousePt.s.X = 600;
-	m_arcball->MousePt.s.Y = 299;
-
-	m_arcball->LastRot = m_arcball->ThisRot;
-	m_arcball->ArcBall.click(&m_arcball->MousePt);
-
-	m_arcball->MousePt.s.X = 200;
-	m_arcball->MousePt.s.Y = 299;
-	Quat4fT     ThisQuat;
-	m_arcball->ArcBall.drag(&m_arcball->MousePt, &ThisQuat);
-	
-	Matrix3fSetRotationFromQuat4f(&m_arcball->ThisRot, &ThisQuat);
-	m_arcball->ThisRot = Matrix3fMulMatrix3f(&m_arcball->LastRot, &m_arcball->ThisRot);
-	Matrix4fSetRotationFromMatrix3f(&m_arcball->Transform, &m_arcball->ThisRot);
-}
-
 void RenderWidget::resizeEvent(QResizeEvent *event)
 {
 	if (m_firstStart)
@@ -63,9 +43,10 @@ void RenderWidget::resizeEvent(QResizeEvent *event)
 		m_d3dApp->initD3D((HWND)winId(), width(), height());
 		m_d3dApp->initScene(width(), height());
 		m_firstStart = false;
+		m_arcball = new MyArcball(width(), height());
 	}
-	SafeDelete(m_arcball);
-	m_arcball = new MyArcball(width(), height());
+	else
+		m_arcball->updateScreenSize(width(), height());
 	m_d3dApp->resizeD3D(width(), height());
 }
 void RenderWidget::paintEvent(QPaintEvent *event)
@@ -85,6 +66,57 @@ void RenderWidget::paintEvent(QPaintEvent *event)
 	m_d3dApp->setTransMat(m_arcball->Transform.M);
 	m_d3dApp->renderScene();
 	update();
+}
+
+void RenderWidget::loadScene(Scene s)
+{
+	if (s == m_curScene)
+		return;
+	m_d3dApp->cleanUp();
+	SafeDelete(m_d3dApp);
+	std::cout << "Loading new scene..." << std::endl;
+	switch (s)
+	{
+	case HILLWAVE:
+		m_d3dApp = new HillWaveApp;
+		break;
+	case MIRROR:
+		m_d3dApp = new MirrorApp;
+		break;
+	case TESSELLATION:
+		m_d3dApp = new TessellationApp;
+		break;
+	case ALTAR:
+		m_d3dApp = new AltarApp;
+		break;
+	case CUBEMAP:
+		m_d3dApp = new CubeMapApp;
+		break;
+	case NORMAL_DISPMAP:
+		m_d3dApp = new NormalDisplacementMapApp;
+		break;
+	case TERRAIN:
+		m_d3dApp = new TerrainApp;
+		break;
+	case PARTICLE:
+		m_d3dApp = new ParticleApp;
+		break;
+	case SHADOW:
+		m_d3dApp = new ShadowApp;
+		break;
+	case SSAO:
+		m_d3dApp = new SSAOApp;
+		break;
+	case ANIMATION:
+		m_d3dApp = new AnimationApp;
+		break;
+	default:
+		break;
+	}
+	m_d3dApp->initD3D((HWND)winId(), width(), height());
+	m_d3dApp->initScene(width(), height());
+	std::cout << "Finish loading!" << std::endl;
+	m_curScene = s;
 }
 
 void RenderWidget::loadObjData()
@@ -111,7 +143,7 @@ void RenderWidget::mousePressEvent(QMouseEvent *mouse_event)
 		m_arcball->MousePt.s.Y = posy;
 
 		m_arcball->LastRot = m_arcball->ThisRot;
-		m_arcball->ArcBall.click(&m_arcball->MousePt);
+		m_arcball->ArcBall->click(&m_arcball->MousePt);
 		m_arcball->button_status = 1;
 	}
 	else if (mouse_event->button() == Qt::RightButton)
@@ -138,7 +170,7 @@ void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 		m_arcball->MousePt.s.X = posx;
 		m_arcball->MousePt.s.Y = posy;
 		Quat4fT     ThisQuat;
-		m_arcball->ArcBall.drag(&m_arcball->MousePt, &ThisQuat);
+		m_arcball->ArcBall->drag(&m_arcball->MousePt, &ThisQuat);
 		Matrix3fSetRotationFromQuat4f(&m_arcball->ThisRot, &ThisQuat);
 		m_arcball->ThisRot = Matrix3fMulMatrix3f(&m_arcball->LastRot, &m_arcball->ThisRot);
 		Matrix4fSetRotationFromMatrix3f(&m_arcball->Transform, &m_arcball->ThisRot);
