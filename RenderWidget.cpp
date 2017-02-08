@@ -17,6 +17,7 @@
 #include "D3DApp/ParticleApp.h"
 #include "D3DApp/ShadowApp.h"
 #include "D3DApp/SSAOApp.h"
+#include "D3DApp/AnimationApp.h"
 #include "D3DApp/NormalDisplacementMapApp.h"
 
 RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true), m_arcball(NULL)
@@ -24,7 +25,7 @@ RenderWidget::RenderWidget(QWidget*parent) :QWidget(parent), m_firstStart(true),
 	setAttribute(Qt::WA_PaintOnScreen, true);
 	setAttribute(Qt::WA_NativeWindow, true);
 	
-	m_d3dApp = new CrateApp;
+	m_d3dApp = new AnimationApp;
 	m_frameCount = 0;
 	m_timer.Reset();
 }

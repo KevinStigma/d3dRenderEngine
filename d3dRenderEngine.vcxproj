@@ -155,6 +155,7 @@
     <ClCompile Include="Arcball\ArcBall.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3DApp\AltarApp.cpp" />
+    <ClCompile Include="D3DApp\AnimationApp.cpp" />
     <ClCompile Include="D3DApp\CrateApp.cpp" />
     <ClCompile Include="D3DApp\CubeMapApp.cpp" />
     <ClCompile Include="D3DApp\D3DApp.cpp" />
@@ -196,11 +197,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GlobalSys.cpp" />
+    <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates\RenderStates.cpp" />
     <ClCompile Include="RenderWidget.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
+    <ClCompile Include="SkinnedData.cpp" />
+    <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -251,6 +256,7 @@
     <ClInclude Include="Arcball\MyArcball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3DApp\AltarApp.h" />
+    <ClInclude Include="D3DApp\AnimationApp.h" />
     <ClInclude Include="D3DApp\CrateApp.h" />
     <ClInclude Include="D3DApp\CubeMapApp.h" />
     <ClInclude Include="D3DApp\D3DApp.h" />
@@ -267,9 +273,13 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeneratedFiles\ui_d3drenderengine.h" />
     <ClInclude Include="GlobalSys.h" />
+    <ClInclude Include="LoadM3d.h" />
+    <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates\RenderStates.h" />
     <ClInclude Include="ShadowMap.h" />
+    <ClInclude Include="SkinnedData.h" />
+    <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Terrain.h" />

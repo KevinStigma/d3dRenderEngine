@@ -52,6 +52,7 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	Light3TexShadowTech = mFX->GetTechniqueByName("Light3TexShadow");
 	Light3TexShadowSsaoTech = mFX->GetTechniqueByName("Light3TexShadowSsao");
 	Light3RefSsaoTech = mFX->GetTechniqueByName("Light3RefSsao");
+	Light3TexShadowSkinedTech = mFX->GetTechniqueByName("Light3TexShadowSkined");
 
 	Light1RefTech	  = mFX->GetTechniqueByName("Light1Reflect");
 	Light2RefTech     = mFX->GetTechniqueByName("Light2Reflect");
@@ -70,6 +71,7 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	CubeMap			  = mFX->GetVariableByName("gCubeMap")->AsShaderResource();
 	TexTransform	  = mFX->GetVariableByName("gTexTransform")->AsMatrix();
 	ShadowTransform = mFX->GetVariableByName("gShadowTransform")->AsMatrix();
+	BoneTransforms = mFX->GetVariableByName("gBoneTransforms")->AsMatrix();
 	FogColor = mFX->GetVariableByName("gFogColor")->AsVector();
 	FogStart = mFX->GetVariableByName("gFogStart")->AsScalar();
 	FogRange = mFX->GetVariableByName("gFogRange")->AsScalar();
@@ -119,7 +121,6 @@ SkyEffect::~SkyEffect()
 {
 }
 #pragma endregion
-
 
 #pragma region NormalMapEffect
 NormalMapEffect::NormalMapEffect(ID3D11Device* device, const std::wstring& filename)
@@ -353,7 +354,7 @@ BuildShadowMapEffect::BuildShadowMapEffect(ID3D11Device* device, const std::wstr
 {
 	BuildShadowMapTech = mFX->GetTechniqueByName("BuildShadowMapTech");
 	BuildShadowMapAlphaClipTech = mFX->GetTechniqueByName("BuildShadowMapAlphaClipTech");
-
+	BuildShadowMapSkinnedTech = mFX->GetTechniqueByName("BuildShadowMapSkinnedTech");
 	TessBuildShadowMapTech = mFX->GetTechniqueByName("TessBuildShadowMapTech");
 	TessBuildShadowMapAlphaClipTech = mFX->GetTechniqueByName("TessBuildShadowMapAlphaClipTech");
 
@@ -370,6 +371,7 @@ BuildShadowMapEffect::BuildShadowMapEffect(ID3D11Device* device, const std::wstr
 	MaxTessFactor = mFX->GetVariableByName("gMaxTessFactor")->AsScalar();
 	DiffuseMap = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
 	NormalMap = mFX->GetVariableByName("gNormalMap")->AsShaderResource();
+	BoneTransforms = mFX->GetVariableByName("gBoneTransforms")->AsMatrix();
 }
 
 BuildShadowMapEffect::~BuildShadowMapEffect()

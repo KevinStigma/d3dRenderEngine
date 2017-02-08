@@ -146,6 +146,21 @@
     <ClCompile Include="RenderStates\RenderStates.cpp">
       <Filter>RenderStates</Filter>
     </ClCompile>
+    <ClCompile Include="D3DApp\AnimationApp.cpp">
+      <Filter>D3DApp</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadM3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="d3drenderengine.h">
@@ -242,6 +257,21 @@
     </ClInclude>
     <ClInclude Include="RenderStates\RenderStates.h">
       <Filter>RenderStates</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp\AnimationApp.h">
+      <Filter>D3DApp</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadM3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshGeometry.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

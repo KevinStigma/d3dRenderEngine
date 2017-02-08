@@ -26,6 +26,10 @@ cbuffer cbPerObject
 	float4x4 gShadowTransform; 
 	Material gMaterial;
 }; 
+cbuffer cbSkinned
+{
+	float4x4 gBoneTransforms[96];
+};
 
 // Nonnumeric values cannot be added to a cbuffer.
 Texture2D gDiffuseMap;
@@ -58,6 +62,16 @@ struct VertexIn
 	float2 Tex     : TEXCOORD;
 };
 
+struct SkinnedVertexIn
+{
+	float3 PosL       : POSITION;
+	float3 NormalL    : NORMAL;
+	float2 Tex        : TEXCOORD;
+	float3 TangentL   : TANGENT;
+	float3 Weights    : WEIGHTS;
+	uint4 BoneIndices : BONEINDICES;
+};
+
 struct VertexOut
 {
 	float4 PosH       : SV_POSITION;
@@ -87,6 +101,49 @@ VertexOut VS(VertexIn vin)
 
 	// Generate projective tex-coords to project SSAO map onto scene.
 	vout.SsaoPosH = mul(float4(vin.PosL, 1.0f), gWorldViewProjTex);
+
+	return vout;
+}
+ 
+VertexOut SkinnedVS(SkinnedVertexIn vin)
+{
+    VertexOut vout;
+
+	// Init array or else we get strange warnings about SV_POSITION.
+	float weights[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+	weights[0] = vin.Weights.x;
+	weights[1] = vin.Weights.y;
+	weights[2] = vin.Weights.z;
+	weights[3] = 1.0f - weights[0] - weights[1] - weights[2];
+
+	float3 posL     = float3(0.0f, 0.0f, 0.0f);
+	float3 normalL  = float3(0.0f, 0.0f, 0.0f);
+	float3 tangentL = float3(0.0f, 0.0f, 0.0f);
+	for(int i = 0; i < 4; ++i)
+	{
+	    // Assume no nonuniform scaling when transforming normals, so 
+		// that we do not have to use the inverse-transpose.
+
+	    posL     += weights[i]*mul(float4(vin.PosL, 1.0f), gBoneTransforms[vin.BoneIndices[i]]).xyz;
+		normalL  += weights[i]*mul(vin.NormalL,  (float3x3)gBoneTransforms[vin.BoneIndices[i]]);
+		tangentL += weights[i]*mul(vin.TangentL.xyz, (float3x3)gBoneTransforms[vin.BoneIndices[i]]);
+	}
+ 
+	// Transform to world space space.
+	vout.PosW     = mul(float4(posL, 1.0f), gWorld).xyz;
+	vout.NormalW  = mul(normalL, (float3x3)gWorldInvTranspose);
+
+	// Transform to homogeneous clip space.
+	vout.PosH = mul(float4(posL, 1.0f), gWorldViewProj);
+	
+	// Output vertex attributes for interpolation across triangle.
+	vout.Tex = mul(float4(vin.Tex, 0.0f, 1.0f), gTexTransform).xy;
+
+	// Generate projective tex-coords to project shadow map onto scene.
+	vout.ShadowPosH = mul(float4(posL, 1.0f), gShadowTransform);
+
+	// Generate projective tex-coords to project SSAO map onto scene.
+	vout.SsaoPosH = mul(float4(posL, 1.0f), gWorldViewProjTex);
 
 	return vout;
 }
@@ -644,6 +701,17 @@ technique11 Light3TexShadow
         SetPixelShader( CompileShader( ps_5_0, PS(3, true, false, false, false,true,false) ) );
     }
 }
+
+technique11 Light3TexShadowSkined
+{
+    pass P0
+    {
+        SetVertexShader( CompileShader( vs_5_0, SkinnedVS() ) );
+		SetGeometryShader( NULL );
+        SetPixelShader( CompileShader( ps_5_0, PS(3, true, false, false, false,true,false) ) );
+    }
+}
+
 technique11 Light3TexShadowSsao
 {
     pass P0
