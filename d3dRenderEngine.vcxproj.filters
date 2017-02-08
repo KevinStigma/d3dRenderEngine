@@ -92,9 +92,6 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D3DApp\CrateApp.cpp">
-      <Filter>D3DApp</Filter>
-    </ClCompile>
     <ClCompile Include="D3DApp\D3DApp.cpp">
       <Filter>D3DApp</Filter>
     </ClCompile>
@@ -203,9 +200,6 @@
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D3DApp\CrateApp.h">
-      <Filter>D3DApp</Filter>
     </ClInclude>
     <ClInclude Include="D3DApp\D3DApp.h">
       <Filter>D3DApp</Filter>

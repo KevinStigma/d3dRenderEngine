@@ -217,7 +217,7 @@ void CubeMapApp::drawScene(const Camera& camera, bool drawCenterSphere)
 	m_d3dDevContext->IASetInputLayout(InputLayouts::PosNorTex);
 	m_d3dDevContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT stride = sizeof(Vertex::Basic32);
+	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT offset = 0;
 
 	XMMATRIX view = camera.getViewMatrix();

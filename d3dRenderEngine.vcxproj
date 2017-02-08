@@ -156,7 +156,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3DApp\AltarApp.cpp" />
     <ClCompile Include="D3DApp\AnimationApp.cpp" />
-    <ClCompile Include="D3DApp\CrateApp.cpp" />
     <ClCompile Include="D3DApp\CubeMapApp.cpp" />
     <ClCompile Include="D3DApp\D3DApp.cpp" />
     <ClCompile Include="D3DApp\HillWaveApp.cpp" />
@@ -257,7 +256,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3DApp\AltarApp.h" />
     <ClInclude Include="D3DApp\AnimationApp.h" />
-    <ClInclude Include="D3DApp\CrateApp.h" />
     <ClInclude Include="D3DApp\CubeMapApp.h" />
     <ClInclude Include="D3DApp\D3DApp.h" />
     <ClInclude Include="D3DApp\HillWaveApp.h" />
